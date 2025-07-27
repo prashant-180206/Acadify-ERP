@@ -3,24 +3,163 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --color-primary-light: #e6f7ff;
+  --color-primary: #b3e5fc;
+  --color-primary-dark: #4fc3f7;
+  --color-primary-darkest: #0288d1;
+
+  /* ------------------- Secondary (Cool Gray) ------------------- */
+  --color-secondary-light: #f7f9fc;
+  --color-secondary: #d1d5db;
+  --color-secondary-dark: #9ca3af;
+  --color-secondary-darkest: #4b5563;
+
+  /* ------------------- Accent (Coral / Soft Orange) ------------------- */
+  --color-accent-light: #ffede5;
+  --color-accent: #ffc8b3;
+  --color-accent-dark: #ff9066;
+  --color-accent-darkest: #ff5722;
+
+  /* ------------------- Neutral Text Colors ------------------- */
+  --color-text-main: #1f2937;
+  --color-text-subtle: #4b5563;
+  --color-text-muted: #6b7280;
+  --color-text-faint: #9ca3af;
+
+  --color-text-light: #ffffff;
+  --color-text-light-subtle: #f3f4f6;
+  --color-text-active: #111827;
+  --color-text-inactive: #9ca3af;
+
+  /* ------------------- Neutral Background Colors ------------------- */
+  --color-bg-lightest: #ffffff;
+  --color-bg-lighter: #f9fafb;
+  --color-bg-light: #f3f4f6;
+  --color-bg: #e5e7eb;
+  --color-bg-dark: #d1d5db;
+  --color-bg-darker: #9ca3af;
+  --color-bg-darkest: #4b5563;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --color-primary-light: #1e2b36;
+  --color-primary: #2c3e50;
+  --color-primary-dark: #4ea3d6;
+  --color-primary-darkest: #81d4fa;
+  /* ------------------- Secondary (Cool Gray) ------------------- */
+  --color-secondary-light: #1f242b;
+  --color-secondary: #2c3037;
+  --color-secondary-dark: #4b5563;
+  --color-secondary-darkest: #9ca3af;
+  /* ------------------- Accent (Coral / Soft Orange) ------------------- */
+  --color-accent-light: #2a1e1a;
+  --color-accent: #b36b58;
+  --color-accent: #ff8a65;
+  --color-accent-darkest: #ffab91;
+
+  /* ------------------- Neutral Text Colors ------------------- */
+  --color-text-main: #e5e7eb;
+  --color-text-subtle: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  --color-text-faint: #64748b;
+
+  --color-text-light: #ffffff;
+  --color-text-light-subtle: #d1d5db;
+  --color-text-active: #f8fafc;
+  --color-text-inactive: #64748b;
+
+  /* ------------------- Neutral Background Colors ------------------- */
+  --color-bg-lightest: #0f172a;
+  --color-bg-lighter: #1e293b;
+  --color-bg-light: #334155;
+  --color-bg: #475569;
+  --color-bg: #64748b;
+  --color-bg-darker: #94a3b8;
+  --color-bg-darkest: #cbd5e1;
 }
+
+/* ------------------- 🌙 Dark Mode ------------------- */
+
+/* stylelint-disable-next-line */
+@theme inline {
+  /* ------------------- Primary ------------------- */
+  --color-primary-light: var(--color-primary-light, #e6f7ff);
+  --color-primary: var(--color-primary, var(--color-primary-light, #b3e5fc));
+  --color-primary-dark: var(
+    --color-primary-dark,
+    var(--color-primary, #4fc3f7)
+  );
+  --color-primary-darkest: var(
+    --color-primary-darkest,
+    var(--color-primary-dark, #0288d1)
+  );
+
+  /* ------------------- Secondary ------------------- */
+  --color-secondary-light: var(--color-secondary-light, #f7f9fc);
+  --color-secondary: var(
+    --color-secondary,
+    var(--color-secondary-light, #d1d5db)
+  );
+  --color-secondary-dark: var(
+    --color-secondary-dark,
+    var(--color-secondary, #9ca3af)
+  );
+  --color-secondary-darkest: var(
+    --color-secondary-darkest,
+    var(--color-secondary-dark, #4b5563)
+  );
+
+  /* ------------------- Accent ------------------- */
+  --color-accent-light: var(--color-accent-light, #ffede5);
+  --color-accent: var(--color-accent, var(--color-accent-light, #ffc8b3));
+  --color-accent-dark: var(--color-accent-dark, var(--color-accent, #ff9066));
+  --color-accent-darkest: var(
+    --color-accent-darkest,
+    var(--color-accent-dark, #ff5722)
+  );
+
+  /* ------------------- Neutral Text ------------------- */
+  --color-text-main: var(--color-text-main, #1f2937);
+  --color-text-subtle: var(
+    --color-text-subtle,
+    var(--color-text-main, #4b5563)
+  );
+  --color-text-muted: var(
+    --color-text-muted,
+    var(--color-text-subtle, #6b7280)
+  );
+  --color-text-faint: var(--color-text-faint, var(--color-text-muted, #9ca3af));
+
+  --color-text-light: var(--color-text-light, #ffffff);
+  --color-text-light-subtle: var(
+    --color-text-light-subtle,
+    var(--color-text-light, #f3f4f6)
+  );
+  --color-text-active: var(--color-text-active, #111827);
+  --color-text-inactive: var(
+    --color-text-inactive,
+    var(--color-text-faint, #9ca3af)
+  );
+
+  /* ------------------- Neutral Background ------------------- */
+  --color-bg-lightest: var(--color-bg-lightest, #ffffff);
+  --color-bg-lighter: var(
+    --color-bg-lighter,
+    var(--color-bg-lightest, #f9fafb)
+  );
+  --color-bg-light: var(--color-bg-light, var(--color-bg-lighter, #f3f4f6));
+  --color-bg: var(--color-bg, var(--color-bg-light, #e5e7eb));
+  --color-bg-dark: var(--color-bg-dark, var(--color-bg, #d1d5db));
+  --color-bg-darker: var(--color-bg-darker, var(--color-bg-dark, #9ca3af));
+  --color-bg-darkest: var(--color-bg-darkest, var(--color-bg-darker, #4b5563));
+}
+
+/* globals.css */
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
