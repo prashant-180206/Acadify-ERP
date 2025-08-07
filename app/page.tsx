@@ -1,103 +1,119 @@
-import Image from "next/image";
+import Header from "@/components/header";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  CalendarCheck,
+  FilePen,
+  Clock,
+  FileText,
+  Check,
+  Laptop2,
+  GraduationCap,
+  BadgeDollarSign,
+  FilePenLine,
+  CheckCheck,
+  BookOpenCheck,
+  Building,
+  ClipboardCheck,
+  CalendarClock,
+  Users,
+  Book,
+  UserRound,
+} from "lucide-react";
+import React from "react";
 
-export default function Home() {
+const root = () => {
+  const studentFeatures = [
+    { label: "Monitor Attendance", icon: CalendarCheck },
+    { label: "Upload Assignments", icon: FilePen },
+    { label: "Simplify Time Table", icon: Clock },
+    { label: "Track Exams", icon: FileText },
+    { label: "Track Marks", icon: Check },
+    { label: "Track Courses", icon: Laptop2 },
+    { label: "Get Study Material", icon: GraduationCap },
+    { label: "Fee Status Checker", icon: BadgeDollarSign },
+  ];
+  const universityFeatures = [
+    { label: "Manage Divisions", icon: CalendarCheck },
+    { label: "Keep Student Records", icon: FileText }, // Changed for record-keeping
+    { label: "Track Attendance", icon: Clock },
+    { label: "Manage Exams", icon: FilePenLine }, // Pen on paper icon
+    { label: "Evaluation of Students", icon: CheckCheck }, // More evaluation-like
+    { label: "Manage Courses", icon: GraduationCap },
+    { label: "Manage Studies", icon: BookOpenCheck }, // Book-based icon
+    { label: "Manage Student Fees", icon: BadgeDollarSign },
+  ];
+  const teacherFeatures = [
+    { label: "Manage Divisions", icon: Building },
+    { label: "Track Attendance", icon: ClipboardCheck },
+    { label: "Timetable", icon: CalendarClock },
+    { label: "Evaluation of Students", icon: CheckCheck },
+    { label: "Manage Staff", icon: Users },
+    { label: "Subjects", icon: Book },
+    { label: "Student Details", icon: UserRound },
+    { label: "Manage Student Fees", icon: BadgeDollarSign },
+  ];
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className="bg-bg">
+      <div className="f-col justify-around gap-2 py-2">
+        <p className="text-center text-txt-muted font-semibold">
+          Acadify – Your Smart Academic Companion
+        </p>
+        <p className="text-center text-txt-muted font-semibold">
+          Join Us To Experience :
+        </p>
+      </div>
+      <div className="r-col px-4 mb-10">
+        <p className="text-txt-muted font-semibold my-4">For Students : </p>
+        <div className="f-row justify-start gap-4 overflow-auto no-scrollbar">
+          {studentFeatures.map(({ label, icon: Icon }, index) => (
+            <Card
+              key={index}
+              className="flex flex-col items-center justify-between w-36 h-40 p-4 bg-bg-dark shadow-none"
+            >
+              <CardTitle className="text-center text-sm text-[#6665af] font-semibold">
+                {label}
+              </CardTitle>
+              <CardContent>
+                <Icon size={65} className="text-txt" />
+              </CardContent>
+            </Card>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <p className="text-txt-muted font-semibold my-4">For Universities : </p>
+        <div className="f-row justify-start gap-4 overflow-auto no-scrollbar">
+          {universityFeatures.map(({ label, icon: Icon }, index) => (
+            <Card
+              key={index}
+              className="flex flex-col items-center justify-between w-36 h-40 p-4 bg-bg-dark shadow-none"
+            >
+              <CardTitle className="text-center text-sm text-[#6665af] font-semibold">
+                {label}
+              </CardTitle>
+              <CardContent>
+                <Icon size={65} className="text-txt" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <p className="text-txt-muted font-semibold my-4">For Teachers : </p>
+        <div className="f-row justify-start gap-4 overflow-auto no-scrollbar">
+          {teacherFeatures.map(({ label, icon: Icon }, index) => (
+            <Card
+              key={index}
+              className="flex flex-col items-center justify-between w-36 h-40 p-4 bg-bg-dark shadow-none"
+            >
+              <CardTitle className="text-center text-sm text-[#6665af] font-semibold">
+                {label}
+              </CardTitle>
+              <CardContent>
+                <Icon size={65} className="text-txt" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </main>
   );
-}
+};
+
+export default root;
