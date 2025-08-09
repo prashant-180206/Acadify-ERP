@@ -2,9 +2,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Button } from "./ui/button";
+// import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import SignUpBtn from "./signupdialog";
+import { Button } from "./ui/button";
 
 const Header = () => {
   const router = useRouter();

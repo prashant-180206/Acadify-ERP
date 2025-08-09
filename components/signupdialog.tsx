@@ -7,7 +7,6 @@ import {
   DialogTrigger,
   DialogContent,
   DialogHeader,
-  DialogFooter,
   DialogTitle,
   DialogClose,
 } from "./ui/dialog";
@@ -45,12 +44,14 @@ const SignUpBtn = () => {
         </div>
 
         <div className="flex flex-row justify-around">
-          <Button
-            className="bg-bg text-txt-muted hover:bg-bg-main rounded-full"
-            onClick={() => router.push("login")}
-          >
-            Admin Login
-          </Button>
+          <DialogClose asChild>
+            <Button
+              className="bg-bg text-txt-muted hover:bg-bg-main rounded-full"
+              onClick={() => router.push("login")}
+            >
+              Admin Login
+            </Button>
+          </DialogClose>
 
           <DialogClose asChild>
             <Button className="bg-bg text-txt-muted hover:bg-bg-main rounded-full">
