@@ -15,7 +15,7 @@ const TabsSection = () => {
   const [activeTab, setActiveTab] = React.useState<
     | "Personal Details"
     | "Contact Details"
-    | "Marks / Score"
+    | "Qualifications"
     | "Documents"
     | "Submit"
   >("Personal Details");
@@ -53,7 +53,7 @@ const TabsSection = () => {
       ),
     },
     {
-      label: "Marks / Score",
+      label: "Qualifications",
       component: (
         <Marks
           control={form.control}

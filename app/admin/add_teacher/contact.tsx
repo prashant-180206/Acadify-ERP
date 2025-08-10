@@ -103,7 +103,7 @@ const Contact_Details = ({
           className="text-xl p-5 px-12 rounded-full f-row"
           onClick={async () => {
             if (await trigger(inputs)) {
-              settab("Marks / Score");
+              settab("Qualifications");
             }
           }}
         >

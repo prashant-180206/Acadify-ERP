@@ -3,7 +3,6 @@ import { z } from "zod";
 export const StudentSchema = z.object({
   firstName: z.string().min(1, "FirstName is required"),
   lastName: z.string().min(1, "lastName is required"),
-
   dateOfBirth: z.string().min(6, "DOB is Required"),
   gender: z.enum(["male", "female"]),
   contactNo: z.string().length(10, "Enter Valid Phone"),
@@ -16,7 +15,8 @@ export const StudentSchema = z.object({
   highestQualification: z.string().min(1, "highestQualification is required"),
   aadhar: z.string().min(16, "aadhar is required"),
   pan: z.string().min(1, "pan is required"),
-  category: z.string().min(1, "Select a Category"),
+  bankName: z.string().length(11, "Select a bankName"),
+  accountNo: z.string().min(1, "Select a accountNo"),
 });
 
 export type StudentSchemaType = z.infer<typeof StudentSchema>;
@@ -37,7 +37,8 @@ export const defValues = {
   highestQualification: "",
   aadhar: "",
   pan: "",
-  category: "",
+  bankName: "",
+  accountNo: "",
 };
 
 export function camelToTitleCase(text: string): string {

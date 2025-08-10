@@ -3,14 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 // import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import SignUpBtn from "./signupdialog";
 import { Button } from "./ui/button";
 
 const Header = () => {
   const router = useRouter();
+  const path = usePathname();
 
-  const Routes = [
+  let Routes = [
     {
       label: "Home",
       link: "",
@@ -28,6 +29,29 @@ const Header = () => {
       link: "",
     },
   ];
+
+  if (path.includes("admin")) {
+    Routes = [
+      {
+        label: "Dashboard",
+        link: "/admin/dashboard",
+      },
+      {
+        label: "Query Box",
+        link: "/admin/query_box",
+      },
+      {
+        label: "Departments",
+        link: "/admin/departments",
+      },
+
+      {
+        label: "Staff",
+        link: "/admin/staff",
+      },
+    ];
+  }
+
   return (
     <header className="bg-bg-dark f-row justify-between">
       <div className="f-row gap-4">
@@ -41,7 +65,7 @@ const Header = () => {
         <ul className="f-row gap-6">
           {Routes.map((val, i) => {
             return (
-              <li key={i}>
+              <li key={i} className="hover:underline ">
                 <Link href={val.link}>
                   <p className="text-txt-muted font-semibold">{val.label}</p>
                 </Link>

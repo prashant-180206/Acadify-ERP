@@ -97,10 +97,7 @@ const Submit = ({
           className="text-xl p-5 px-12 rounded-full f-row"
           onClick={handleSubmit(onSubmit)}
         >
-          Next{" "}
-          <div>
-            <ChevronRight />
-          </div>
+          Submit
         </Button>
       </div>
     </div>
