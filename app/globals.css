@@ -168,6 +168,9 @@
   .f-col {
     @apply flex flex-col items-center justify-center;
   }
+  .heading {
+    @apply w-full font-semibold text-main-dark text-2xl text-center p-6;
+  }
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
