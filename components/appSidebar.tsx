@@ -16,14 +16,25 @@ import { Button } from "./ui/button";
 export function AppSidebar() {
   const path = usePathname();
   const router = useRouter();
-  const menu = [
-    { label: "Dashboard", route: "/teacher/dashboard" },
-    { label: "Courses", route: "/teacher/courses" },
-    { label: "Attendance", route: "/teacher/attendance" },
-    { label: "My Class", route: "/teacher/myclass" },
-    { label: "Profile", route: "/teacher/profile" },
-    { label: "Time Table", route: "/teacher/timetable" },
-  ];
+  let menu;
+  if (path.includes("teacher")) {
+    menu = [
+      { label: "Dashboard", route: "/teacher/dashboard" },
+      { label: "Courses", route: "/teacher/courses" },
+      { label: "Attendance", route: "/teacher/attendance" },
+      { label: "My Class", route: "/teacher/myclass" },
+      { label: "Profile", route: "/teacher/profile" },
+      { label: "Time Table", route: "/teacher/timetable" },
+    ];
+  } else {
+    menu = [
+      { label: "Dashboard", route: "/student/dashboard" },
+      { label: "Courses", route: "/student/courses" },
+      { label: "Attendance", route: "/student/attendance" },
+      { label: "Profile", route: "/student/profile" },
+      { label: "Time Table", route: "/student/timetable" },
+    ];
+  }
 
   return (
     <Sidebar
