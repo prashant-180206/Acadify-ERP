@@ -79,7 +79,7 @@ export default function AssignmentFormDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="rounded-full bg-cyan-400 text-white">
+        <Button className="rounded-full bg-cyan-400 hover:bg-cyan-500 text-white">
           Add Assignment +
         </Button>
       </DialogTrigger>

@@ -3,10 +3,9 @@ import TeacherProfilePage from "./teacherprofile";
 
 const Profile = () => {
   return (
-    <div>
-      <h1 className="heading">Profile</h1>
+    <main className="f-col bg-bg justify-start md:h-screen">
       <TeacherProfilePage />
-    </div>
+    </main>
   );
 };
 

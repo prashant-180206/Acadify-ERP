@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import {
   Card,
@@ -8,8 +7,9 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-const sampleTeacher = {
+const teacher = {
   t_id: 101,
   name: "Dr. Alice Johnson",
   gender: "Female",
@@ -22,40 +22,58 @@ const sampleTeacher = {
   salary: 75000,
 };
 
+// Utility to extract initials for avatar
+const getInitials = (name: string) =>
+  name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
+
 const TeacherProfilePage = () => {
   return (
-    <div className="container mx-auto p-6">
-      <Card className="max-w-lg mx-auto">
-        <CardHeader>
-          <CardTitle className="text-2xl">{sampleTeacher.name}</CardTitle>
-          <CardDescription className="mt-1 flex flex-wrap gap-2">
-            <Badge variant="outline">{sampleTeacher.designation}</Badge>
-            <Badge variant="outline">{sampleTeacher.gender}</Badge>
-            <Badge variant="outline">{sampleTeacher.department}</Badge>
-          </CardDescription>
+    <div className="w-full md:p-10 flex-1/2 justify-center f-row items-start">
+      <Card className="bg-bg-dark w-full md:max-w-250 rounded-none md:rounded-lg">
+        <CardHeader className="pb-2 f-col">
+          <CardTitle className="heading my-0 py-0">Profile Details</CardTitle>
+          <CardDescription>Detailed information of the teacher</CardDescription>
         </CardHeader>
+
         <CardContent>
-          <div className="space-y-3 text-sm md:text-base">
-            <p>
-              <span className="font-semibold">Qualification:</span>{" "}
-              {sampleTeacher.qualification}
-            </p>
-            <p>
-              <span className="font-semibold">Email:</span>{" "}
-              {sampleTeacher.email}
-            </p>
-            <p>
-              <span className="font-semibold">Contact:</span>{" "}
-              {sampleTeacher.contact_number}
-            </p>
-            <p>
-              <span className="font-semibold">Joined On:</span>{" "}
-              {new Date(sampleTeacher.join_date).toLocaleDateString()}
-            </p>
-            <p>
-              <span className="font-semibold">Salary:</span> $
-              {sampleTeacher.salary.toLocaleString()}
-            </p>
+          <div className="flex flex-col md:flex-row gap-10 items-center">
+            <Avatar className="w-40 h-40 md:w-80 md:h-80">
+              <AvatarFallback className="text-4xl bg-bg-main  font-bold">
+                {getInitials(teacher.name)}
+              </AvatarFallback>
+            </Avatar>
+
+            {/* Profile Details */}
+            <div className="flex items-center flex-col gap-2 text-sm md:text-lg flex-1">
+              <div className="f-col items-start gap-4">
+                <p className="font-semibold text-xl">{teacher.name}</p>
+                <p>
+                  ID: <span className="font-medium">{teacher.t_id}</span>
+                </p>
+                <p>Gender: {teacher.gender}</p>
+                <p>Qualification: {teacher.qualification}</p>
+                <p>
+                  Designation:{" "}
+                  <Badge variant="outline">{teacher.designation}</Badge>
+                </p>
+                <p>
+                  Department:{" "}
+                  <Badge variant="secondary">{teacher.department}</Badge>
+                </p>
+                <p>
+                  Email: <span className="text-blue-400">{teacher.email}</span>
+                </p>
+                <p>Contact: {teacher.contact_number}</p>
+                <p>
+                  Joined: {new Date(teacher.join_date).toLocaleDateString()}
+                </p>
+                <p>Salary: ${teacher.salary.toLocaleString()}</p>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
