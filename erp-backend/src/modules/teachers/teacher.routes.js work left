@@ -1,0 +1,20 @@
+// src/modules/teachers/teacher.routes.js
+import { Router } from "express";
+import {
+  createTeacher,
+  getTeachers,
+  getTeacherById,
+  updateTeacher,
+  deleteTeacher,
+} from "./teacher.controller.js";
+import { authMiddleware as protect } from "../../../middleware/authMiddleware.js";
+
+const router = Router();
+
+router.post("/", protect, createTeacher);       // Add
+router.get("/", protect, getTeachers);          // List all
+router.get("/:id", protect, getTeacherById);    // Get by ID
+router.put("/:id", protect, updateTeacher);     // Update
+router.delete("/:id", protect, deleteTeacher);  // Delete
+
+export default router;
