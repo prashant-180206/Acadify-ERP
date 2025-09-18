@@ -1,0 +1,192 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+/// --- Enums
+enum Role {
+  ADMIN
+  FACULTY
+  STUDENT
+  STAFF
+}
+
+/// --- User / identity table (single source of truth for authentication)
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      Role     @default(STUDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations (one-to-one optional)
+  student   Student? @relation(fields: [studentId], references: [id])
+  studentId Int?     @unique
+  teacher   Teacher? @relation(fields: [teacherId], references: [id])
+  teacherId Int?     @unique
+}
+
+/// --- Departments
+model Department {
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
+  code       String?   @unique
+  createdAt  DateTime  @default(now())
+
+  teachers   Teacher[]
+  courses    Course[]
+}
+
+/// --- Teachers (profile data separate from auth User)
+model Teacher {
+  id           Int       @id @default(autoincrement())
+  fullName     String
+  phone        String? 
+  departmentId Int
+  createdAt    DateTime  @default(now())
+
+  department   Department @relation(fields: [departmentId], references: [id])
+  courses      Course[]
+  loggedIn     LoggedInTeacher[]
+  // link back to User (one-to-one) via User.teacherId
+  user         User?      @relation()
+}
+
+/// --- Students (profile)
+model Student {
+  id        Int       @id @default(autoincrement())
+  rollNo    String    @unique
+  program   String?
+  year      Int       @default(1)
+  createdAt DateTime  @default(now())
+
+  enrollments Enrollment[]
+  fees        FeePayment[]
+  // link back to User (one-to-one) via User.studentId
+  user        User?    @relation()
+}
+
+/// --- Courses
+model Course {
+  id           Int       @id @default(autoincrement())
+  code         String    @unique
+  title        String
+  description  String?
+  credits      Float     @default(3.0)
+  departmentId Int
+  teacherId    Int?      // may be unassigned
+  createdAt    DateTime  @default(now())
+
+  department   Department @relation(fields: [departmentId], references: [id])
+  teacher      Teacher?   @relation(fields: [teacherId], references: [id])
+  enrollments  Enrollment[]
+}
+
+/// --- Enrollment (student <-> course for a semester)
+model Enrollment {
+  id        Int      @id @default(autoincrement())
+  studentId Int
+  courseId  Int
+  semester  String
+  enrolledOn DateTime @default(now())
+
+  student   Student  @relation(fields: [studentId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+
+  attendance AttendanceRecord[]
+
+  @@unique([studentId, courseId, semester], name: "enrollment_unique")
+}
+
+/// --- Attendance records (per enrollment per date)
+model AttendanceRecord {
+  id           Int       @id @default(autoincrement())
+  enrollmentId Int
+  date         DateTime
+  present      Boolean   @default(false)
+  remarks      String?
+
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+
+  @@unique([enrollmentId, date], name: "attendance_unique")
+}
+
+/// --- Fees / Payments
+model FeePayment {
+  id        Int      @id @default(autoincrement())
+  studentId Int
+  amount    Float
+  paidOn    DateTime @default(now())
+  method    String?
+  reference String?
+
+  student   Student  @relation(fields: [studentId], references: [id])
+}
+
+/// --- Inventory: products, purchases, sales
+model Product {
+  id        Int      @id @default(autoincrement())
+  name      String
+  sku       String   @unique
+  quantity  Int      @default(0)
+  unitPrice Float
+  createdAt DateTime @default(now())
+
+  purchases Purchase[]
+  sales     Sale[]
+}
+
+model Purchase {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  qty       Int
+  cost      Float
+  purchasedOn DateTime @default(now())
+
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Sale {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  qty       Int
+  revenue   Float
+  soldOn    DateTime @default(now())
+
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+/// --- LoggedInTeacher: simple session store to track active logins (optional)
+model LoggedInTeacher {
+  id         Int      @id @default(autoincrement())
+  teacherId  Int
+  token      String   @unique
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime?
+
+  teacher    Teacher  @relation(fields: [teacherId], references: [id])
+}
+
+/// --- Dashboard (cached aggregates for quick UI)
+model Dashboard {
+  id               Int      @id @default(autoincrement())
+  totalCourses     Int
+  totalTeachers    Int
+  totalDepartments Int
+  totalStudents    Int
+  generatedAt      DateTime @default(now())
+}
