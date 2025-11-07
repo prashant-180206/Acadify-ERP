@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const StudentSchema = z.object({
+export const TeacherSchema = z.object({
   firstName: z.string().min(1, "FirstName is required"),
   lastName: z.string().min(1, "lastName is required"),
   dateOfBirth: z.string().min(6, "DOB is Required"),
@@ -15,16 +15,15 @@ export const StudentSchema = z.object({
   highestQualification: z.string().min(1, "highestQualification is required"),
   aadhar: z.string().min(16, "aadhar is required"),
   pan: z.string().min(1, "pan is required"),
-  bankName: z.string().length(11, "Select a bankName"),
+  bankName: z.string().min(11, "Select a bankName"),
   accountNo: z.string().min(1, "Select a accountNo"),
 });
 
-export type StudentSchemaType = z.infer<typeof StudentSchema>;
+export type TeacherSchemaType = z.infer<typeof TeacherSchema>;
 
 export const defValues = {
   firstName: "",
   lastName: "",
-
   dateOfBirth: "", // or new Date() if you want today's date
   gender: "male", // or "male"/"female" if you want a pre-selected value
   contactNo: "",

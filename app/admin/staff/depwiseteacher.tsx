@@ -1,6 +1,6 @@
 import React from "react";
 // import { TeacherCard } from "./TeacherCard";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+// import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { TeacherCard } from "./teachercard";
 
 type Teacher = {

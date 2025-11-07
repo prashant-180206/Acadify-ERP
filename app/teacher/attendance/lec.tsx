@@ -19,7 +19,11 @@ const LectureAttendanceCard: React.FC<LectureAttendanceCardProps> = ({
   date,
   attendance_marked,
 }) => {
-  const formattedDate = new Date(date).toLocaleDateString("en-GB");
+  // Format date as ISO string (consistent across server/client)
+  const dateString =
+    typeof date === "string"
+      ? date
+      : new Date(date).toISOString().split("T")[0];
 
   return (
     <Card className=" w-full max-w-5xl p-0 mb-6 md:mx-10">
@@ -31,7 +35,7 @@ const LectureAttendanceCard: React.FC<LectureAttendanceCardProps> = ({
           </div>
           <div className="text-right">
             <p className="text-md font-semibold">{timeslot}</p>
-            <p className="text-xs text-muted-foreground">{formattedDate}</p>
+            <p className="text-xs text-muted-foreground">{dateString}</p>
           </div>
         </div>
         <CardContent className="flex justify-end gap-4">

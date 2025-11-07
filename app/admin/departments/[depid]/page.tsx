@@ -1,21 +1,15 @@
 import { courses } from "@/backend/courses";
 import { getDepById } from "@/backend/departments";
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardDescription,
-  CardAction,
-} from "@/components/ui/card";
+import { Card, CardContent, CardAction } from "@/components/ui/card";
 import { CourseCard } from "./course";
 import { Plus } from "lucide-react";
 import { AddCourseDialog } from "./addcourse";
+// import { supabase } from "@/lib/supabase";
 
 const Course = async ({ params }: { params: Promise<{ depid: string }> }) => {
   const { depid } = await params;
-  const dep = getDepById(depid);
+  const dep = await getDepById(depid);
 
   return (
     <main className="p-6 space-y-6">

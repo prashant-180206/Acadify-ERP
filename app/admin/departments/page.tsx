@@ -1,4 +1,4 @@
-import { departments } from "@/backend/departments";
+// import { departments } from "@/backend/departments";
 import {
   Card,
   CardAction,
@@ -21,23 +21,26 @@ import {
 import { Button } from "@/components/ui/button";
 import AddDepartment from "./adddepdialog";
 import Link from "next/link";
+import { getDepartments } from "@/backend/departments";
 
-function getDepartmentIcon(name: string) {
-  const lower = name.toLowerCase();
-  if (lower.includes("computer"))
-    return <Laptop className="w-6 h-6 text-blue-500" />;
-  if (lower.includes("electrical"))
-    return <Zap className="w-6 h-6 text-yellow-500" />;
-  if (lower.includes("mechanical"))
-    return <Cog className="w-6 h-6 text-gray-500" />;
-  if (lower.includes("civil"))
-    return <Building2 className="w-6 h-6 text-green-500" />;
-  if (lower.includes("electronics"))
-    return <Radio className="w-6 h-6 text-pink-500" />;
-  return <Briefcase className="w-6 h-6 text-purple-500" />; // fallback icon
-}
+const page = async () => {
+  const departments = await getDepartments();
 
-const page = () => {
+  function getDepartmentIcon(name: string) {
+    const lower = name.toLowerCase();
+    if (lower.includes("computer"))
+      return <Laptop className="w-6 h-6 text-blue-500" />;
+    if (lower.includes("electrical"))
+      return <Zap className="w-6 h-6 text-yellow-500" />;
+    if (lower.includes("mechanical"))
+      return <Cog className="w-6 h-6 text-gray-500" />;
+    if (lower.includes("civil"))
+      return <Building2 className="w-6 h-6 text-green-500" />;
+    if (lower.includes("electronics"))
+      return <Radio className="w-6 h-6 text-pink-500" />;
+    return <Briefcase className="w-6 h-6 text-purple-500" />; // fallback icon
+  }
+
   return (
     <main className="bgbg">
       <h1 className="w-full font-semibold text-main-dark text-2xl text-center p-6">
@@ -58,7 +61,7 @@ const page = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-txt">HOD Id : {val.HodId}</p>
-                <p className="text-txt">Email : {val.Email}</p>
+                <p className="text-txt">Email : {val.email}</p>
               </CardContent>
               <CardFooter>
                 <Link href={`/admin/departments/${val.d_id}`}>

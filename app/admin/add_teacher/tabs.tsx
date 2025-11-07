@@ -9,7 +9,8 @@ import Submit from "./submit";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "@/components/ui/form";
-import { defValues, StudentSchema, StudentSchemaType } from "./schema";
+import { defValues, TeacherSchema, TeacherSchemaType } from "./schema";
+import { addTeacher } from "@/backend/addfuncs";
 
 const TabsSection = () => {
   const [activeTab, setActiveTab] = React.useState<
@@ -20,15 +21,17 @@ const TabsSection = () => {
     | "Submit"
   >("Personal Details");
 
-  const form = useForm<StudentSchemaType>({
-    resolver: zodResolver(StudentSchema),
-    defaultValues: defValues as any,
+  const form = useForm<TeacherSchemaType>({
+    resolver: zodResolver(TeacherSchema),
+    defaultValues: defValues as TeacherSchemaType,
   });
 
-  function onSubmit(values: StudentSchemaType) {
+  function onSubmit(values: TeacherSchemaType) {
     console.log(values);
-    alert("whioosh");
-    // Handle login logic
+    addTeacher(values);
+    form.reset();
+    alert("Teacher Added Successfully");
+    setActiveTab("Personal Details");
   }
 
   const tabs = [
@@ -37,7 +40,7 @@ const TabsSection = () => {
       component: (
         <PersonalDetails
           control={form.control}
-          settab={setActiveTab as any}
+          settab={setActiveTab as (str: string) => void}
           trigger={form.trigger}
         />
       ),
@@ -47,7 +50,7 @@ const TabsSection = () => {
       component: (
         <Contact_Details
           control={form.control}
-          settab={setActiveTab as any}
+          settab={setActiveTab as (str: string) => void}
           trigger={form.trigger}
         />
       ),
@@ -57,7 +60,7 @@ const TabsSection = () => {
       component: (
         <Marks
           control={form.control}
-          settab={setActiveTab as any}
+          settab={setActiveTab as (str: string) => void}
           trigger={form.trigger}
         />
       ),
@@ -67,7 +70,7 @@ const TabsSection = () => {
       component: (
         <Documents
           control={form.control}
-          settab={setActiveTab as any}
+          settab={setActiveTab as (str: string) => void}
           trigger={form.trigger}
         />
       ),
@@ -77,8 +80,8 @@ const TabsSection = () => {
       component: (
         <Submit
           control={form.control}
-          handleSubmit={form.handleSubmit as any}
-          onSubmit={onSubmit as any}
+          handleSubmit={form.handleSubmit}
+          onSubmit={onSubmit as () => void}
           getValues={form.getValues}
         />
       ),
@@ -88,7 +91,7 @@ const TabsSection = () => {
   return (
     <Tabs
       value={activeTab}
-      onValueChange={setActiveTab as any}
+      onValueChange={setActiveTab as (str: string) => void}
       className="flex-1 f-row justify-evenly py-10 h-[75vh]"
     >
       <TabsList className="f-col items-start justify-start bg-main-light p-10 pt-16 rounded-xl h-full">

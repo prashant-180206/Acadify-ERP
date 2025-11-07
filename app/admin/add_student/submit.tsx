@@ -1,7 +1,6 @@
 import React from "react";
 import { StudentSchemaType } from "./schema";
 import {
-  Control,
   UseFormGetValues,
   SubmitHandler,
   UseFormHandleSubmit,
@@ -19,12 +18,10 @@ import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Submit = ({
-  control,
   handleSubmit,
   onSubmit,
   getValues,
 }: {
-  control: Control<StudentSchemaType>;
   handleSubmit: UseFormHandleSubmit<StudentSchemaType>;
   onSubmit: SubmitHandler<StudentSchemaType>;
   getValues: UseFormGetValues<StudentSchemaType>;
@@ -33,9 +30,9 @@ const Submit = ({
   const entries = Object.entries(allvalues);
 
   // Split entries into chunks of 2 pairs (4 cells: field1, val1, field2, val2)
-  const chunkedEntries: [string, any][][] = [];
+  const chunkedEntries: [string, string][][] = [];
   for (let i = 0; i < entries.length; i += 2) {
-    chunkedEntries.push(entries.slice(i, i + 2));
+    chunkedEntries.push(entries.slice(i, i + 2) as [string, string][]);
   }
 
   return (

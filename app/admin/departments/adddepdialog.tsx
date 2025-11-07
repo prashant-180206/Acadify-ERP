@@ -1,11 +1,9 @@
 "use client";
-
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogHeader,
@@ -24,6 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { addDepartment } from "@/backend/departments";
 
 // Validation schema
 const formSchema = z.object({
@@ -59,8 +58,6 @@ const fields = [
 ] as const;
 
 export default function AddDepartment() {
-  const router = useRouter();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -73,6 +70,15 @@ export default function AddDepartment() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Department credentials:", values);
+    addDepartment({
+      d_id: parseInt(values.departmentId, 10),
+      name: values.departmentName,
+      hodid: parseInt(values.hod, 10),
+      email: values.email,
+    });
+    form.reset();
+    alert("Department Added Successfully!");
+    console.log("Department added");
   }
 
   return (

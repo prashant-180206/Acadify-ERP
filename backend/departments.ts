@@ -1,41 +1,49 @@
-export const departments = [
-  {
-    d_id: 101,
-    name: "Computer Science and Engineering",
-    HodId: 201,
-    Email: "cse@enggcollege.edu",
-  },
-  {
-    d_id: 102,
-    name: "Electrical Engineering",
-    HodId: 210,
-    Email: "ee@enggcollege.edu",
-  },
-  {
-    d_id: 103,
-    name: "Mechanical Engineering",
-    HodId: 225,
-    Email: "me@enggcollege.edu",
-  },
-  {
-    d_id: 104,
-    name: "Civil Engineering",
-    HodId: 213,
-    Email: "ce@enggcollege.edu",
-  },
-  {
-    d_id: 105,
-    name: "Electronics and Communication Engineering",
-    HodId: 235,
-    Email: "ece@enggcollege.edu",
-  },
-];
+"use server"
 
-export const getDepById = (id: string) => {
-  return {
-    d_id: 101,
-    name: "Computer Science and Engineering",
-    HodId: 201,
-    Email: "cse@enggcollege.edu",
-  };
+import { supabase } from "@/lib/supabase";
+
+interface Department {
+  d_id: number;
+  name: string;
+  hodid: number;
+  email: string;
+}
+
+export async function getDepartments(): Promise<Department[]> {
+  const { data, error } = await supabase
+    .from('departments')
+    .select('*')
+    .limit(20);
+  if (error) {
+    throw error;
+  }
+  return data ?? [];
+}
+
+export async function addDepartment(department: Department) {
+  const { data, error } = await supabase
+    .from('departments')
+    .insert([department]);
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
+export const getDepById =async (id: string) => {
+  const { data, error } = await supabase
+    .from('departments')
+    .select('*')
+    .eq('d_id', id)
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
 };
+
+

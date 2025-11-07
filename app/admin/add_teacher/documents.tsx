@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
-import { camelToTitleCase, StudentSchemaType } from "./schema";
-import { Control } from "react-hook-form";
+import React from "react";
+import { camelToTitleCase, TeacherSchemaType } from "./schema";
+import { Control, UseFormTrigger } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -9,13 +9,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
@@ -25,58 +25,19 @@ const Documents = ({
   settab,
   trigger,
 }: {
-  control: Control<StudentSchemaType>;
+  control: Control<TeacherSchemaType>;
   settab: (str: string) => void;
-  trigger: any;
+  trigger: UseFormTrigger<TeacherSchemaType>;
 }) => {
-  const inputs: (keyof StudentSchemaType)[] = [
+  const inputs: (keyof TeacherSchemaType)[] = [
     "aadhar",
     "pan",
     "bankName",
     "accountNo",
   ];
-
-  // State object to hold value for otherinputs field
-  const [catid, setcatid] = useState<string>("");
-
   return (
     <div className="f-row h-full w-full justify-evenly content-center gap-y-6 flex-wrap">
       {inputs.map((val, idx) => {
-        // if (val === "category") {
-        //   return (
-        //     <FormField
-        //       key={idx}
-        //       control={control}
-        //       name={val}
-        //       render={({ field }) => (
-        //         <FormItem className="w-5/12">
-        //           <FormLabel className="text-main-dark">
-        //             Fill for {val}
-        //           </FormLabel>
-        //           <FormControl>
-        //             <Select
-        //               value={field.value ?? ""}
-        //               onValueChange={field.onChange}
-        //             >
-        //               <SelectTrigger className="w-full bg-bg-main rounded-full text-main-dark p-5">
-        //                 <SelectValue placeholder="Select Category" />
-        //               </SelectTrigger>
-        //               <SelectContent>
-        //                 {["OBC", "Open", "SC", "ST", "EWS"].map((state, i) => (
-        //                   <SelectItem key={i} value={state}>
-        //                     {state}
-        //                   </SelectItem>
-        //                 ))}
-        //               </SelectContent>
-        //             </Select>
-        //           </FormControl>
-        //           <FormMessage />
-        //         </FormItem>
-        //       )}
-        //     />
-        //   );
-        // }
-
         return (
           <FormField
             key={idx}

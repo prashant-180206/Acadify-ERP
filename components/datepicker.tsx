@@ -24,8 +24,16 @@ export function DatePicker({
   label = "Select date",
 }: DatePickerProps) {
   const [open, setOpen] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
 
   const selectedDate = value ? new Date(value) : undefined;
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const formattedDate =
+    mounted && selectedDate ? selectedDate.toLocaleDateString() : "Select date";
 
   return (
     <div className="flex flex-col gap-3">
@@ -39,7 +47,7 @@ export function DatePicker({
             id="date"
             className="w-full text-start bg-bg-main hover:bg-bg-main text-main-dark p-5 rounded-full"
           >
-            {selectedDate ? selectedDate.toLocaleDateString() : "Select date"}
+            {formattedDate}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>

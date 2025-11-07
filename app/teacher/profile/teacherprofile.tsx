@@ -30,6 +30,12 @@ const getInitials = (name: string) =>
     .join("")
     .toUpperCase();
 
+// Format date consistently: YYYY-MM-DD format
+const formatDate = (dateString: string) => dateString;
+
+// Format number with thousand separator
+const formatSalary = (salary: number) => salary.toString();
+
 const TeacherProfilePage = () => {
   return (
     <div className="w-full md:p-10 flex-1/2 justify-center f-row items-start">
@@ -68,10 +74,8 @@ const TeacherProfilePage = () => {
                   Email: <span className="text-blue-400">{teacher.email}</span>
                 </p>
                 <p>Contact: {teacher.contact_number}</p>
-                <p>
-                  Joined: {new Date(teacher.join_date).toLocaleDateString()}
-                </p>
-                <p>Salary: ${teacher.salary.toLocaleString()}</p>
+                <p>Joined: {formatDate(teacher.join_date)}</p>
+                <p>Salary: ${formatSalary(teacher.salary)}</p>
               </div>
             </div>
           </div>

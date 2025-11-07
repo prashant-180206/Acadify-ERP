@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/form";
 import React from "react";
 import { camelToTitleCase, StudentSchemaType } from "./schema";
-import { Control } from "react-hook-form";
+import { Control, UseFormTrigger } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { DatePicker } from "@/components/datepicker";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -21,7 +21,7 @@ const PersonalDetails = ({
 }: {
   control: Control<StudentSchemaType>;
   settab: (str: string) => void;
-  trigger: any;
+  trigger: UseFormTrigger<StudentSchemaType>;
 }) => {
   const inputs: (keyof StudentSchemaType)[] = [
     "firstName",

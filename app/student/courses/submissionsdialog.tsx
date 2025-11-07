@@ -41,6 +41,14 @@ const AssignmentSubmissionDialog: React.FC<Props> = ({
   instructions = "Submit in PDF",
 }) => {
   const form = useForm<FormData>();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const formattedDate =
+    mounted && dueDate ? new Date(dueDate).toLocaleDateString() : dueDate;
 
   const onSubmit = (data: FormData) => {
     if (!data.file || data.file.length === 0) {
@@ -74,7 +82,7 @@ const AssignmentSubmissionDialog: React.FC<Props> = ({
               </DialogTitle>
               {dueDate && (
                 <DialogDescription className="text-sm text-black/60 mt-2 px-1">
-                  {new Date(dueDate).toLocaleDateString()}
+                  {formattedDate}
                 </DialogDescription>
               )}
             </DialogHeader>

@@ -39,7 +39,6 @@ export default function StudentLoginPage() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
-    // Handle login logic
   }
 
   return (
