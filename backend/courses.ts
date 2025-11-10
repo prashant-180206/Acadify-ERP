@@ -1,322 +1,44 @@
-export const courses = [
-  {
-    course_id: 1001,
-    course_name: "Engineering Mathematics-I",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 1,
-  },
-  {
-    course_id: 1002,
-    course_name: "Basic Electrical Engineering",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 1,
-  },
-  {
-    course_id: 1003,
-    course_name: "Programming in C",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 1,
-  },
-  {
-    course_id: 1004,
-    course_name: "Engineering Physics",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 1,
-  },
-  {
-    course_id: 1005,
-    course_name: "Workshop Practice",
-    credits: 2,
-    num_lectures: 2,
-    department_id: 101,
-    semester: 1,
-  },
-  {
-    course_id: 1006,
-    course_name: "Engineering Mathematics-II",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 2,
-  },
-  {
-    course_id: 1007,
-    course_name: "Engineering Chemistry",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 2,
-  },
-  {
-    course_id: 1008,
-    course_name: "Object Oriented Programming (C++)",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 2,
-  },
-  {
-    course_id: 1009,
-    course_name: "Digital Logic Design",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 2,
-  },
-  {
-    course_id: 1010,
-    course_name: "Environmental Studies",
-    credits: 2,
-    num_lectures: 2,
-    department_id: 101,
-    semester: 2,
-  },
-  {
-    course_id: 1011,
-    course_name: "Discrete Mathematics",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 3,
-  },
-  {
-    course_id: 1012,
-    course_name: "Data Structures and Algorithms",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 3,
-  },
-  {
-    course_id: 1013,
-    course_name: "Computer Organization and Architecture",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 3,
-  },
-  {
-    course_id: 1014,
-    course_name: "Operating Systems",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 3,
-  },
-  {
-    course_id: 1015,
-    course_name: "Database Management Systems",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 3,
-  },
-  {
-    course_id: 1016,
-    course_name: "Design and Analysis of Algorithms",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 4,
-  },
-  {
-    course_id: 1017,
-    course_name: "Microprocessors and Interfacing",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 4,
-  },
-  {
-    course_id: 1018,
-    course_name: "Computer Networks",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 4,
-  },
-  {
-    course_id: 1019,
-    course_name: "Software Engineering",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 4,
-  },
-  {
-    course_id: 1020,
-    course_name: "Theory of Computation",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 4,
-  },
-  {
-    course_id: 1021,
-    course_name: "Web Technologies",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 5,
-  },
-  {
-    course_id: 1022,
-    course_name: "Artificial Intelligence",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 5,
-  },
-  {
-    course_id: 1023,
-    course_name: "Compiler Design",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 5,
-  },
-  {
-    course_id: 1024,
-    course_name: "Machine Learning",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 5,
-  },
-  {
-    course_id: 1025,
-    course_name: "Professional Ethics and Communication",
-    credits: 2,
-    num_lectures: 2,
-    department_id: 101,
-    semester: 5,
-  },
-  {
-    course_id: 1026,
-    course_name: "Data Mining and Warehousing",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 6,
-  },
-  {
-    course_id: 1027,
-    course_name: "Internet of Things",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 6,
-  },
-  {
-    course_id: 1028,
-    course_name: "Mobile Computing",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 6,
-  },
-  {
-    course_id: 1029,
-    course_name: "Human-Computer Interaction",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 6,
-  },
-  {
-    course_id: 1030,
-    course_name: "Cloud Computing",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 6,
-  },
-  {
-    course_id: 1031,
-    course_name: "Cybersecurity",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 7,
-  },
-  {
-    course_id: 1032,
-    course_name: "Natural Language Processing",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 7,
-  },
-  {
-    course_id: 1033,
-    course_name: "Big Data Analytics",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 7,
-  },
-  {
-    course_id: 1034,
-    course_name: "Elective - Blockchain Technology",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 7,
-  },
-  {
-    course_id: 1035,
-    course_name: "Project Phase I",
-    credits: 2,
-    num_lectures: 2,
-    department_id: 101,
-    semester: 7,
-  },
-  {
-    course_id: 1036,
-    course_name: "Elective - Robotics and Automation",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 8,
-  },
-  {
-    course_id: 1037,
-    course_name: "Elective - Quantum Computing",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 8,
-  },
-  {
-    course_id: 1038,
-    course_name: "Software Project Management",
-    credits: 3,
-    num_lectures: 3,
-    department_id: 101,
-    semester: 8,
-  },
-  {
-    course_id: 1039,
-    course_name: "Industrial Training / Seminar",
-    credits: 2,
-    num_lectures: 2,
-    department_id: 101,
-    semester: 8,
-  },
-  {
-    course_id: 1040,
-    course_name: "Project Phase II",
-    credits: 6,
-    num_lectures: 6,
-    department_id: 101,
-    semester: 8,
-  },
-];
+"use server"
+
+import { supabase } from "@/lib/supabase";
+
+interface Course {
+  course_id?: number;
+  course_name: string;
+  credits: number;
+  num_lectures: number;
+  department_id: number;
+  semester: number;
+}
+
+export const getCoursesForTeacher= async (t_id: number) => {
+  const { data, error } = await supabase
+    .from("teacher_courses")
+    .select("course_id, courses ( course_name )")
+    .eq("teacher_id", t_id);
+
+  if (error) {
+    throw error;
+  }
+  return data ?? [];
+}
+
+export async function getCoursesByDepartment(departmentId: number): Promise<Course[]> {
+  const { data, error } = await supabase
+    .from("courses")
+    .select("*")
+    .eq("department_id", departmentId);
+
+  if (error) {
+    throw error;
+  }
+
+  return data ?? [];
+}
+
+export const addCourse = async (course: Course): Promise<void> => {
+  const { error } = await supabase.from("courses").insert([course]);
+  if (error) {
+    throw error;
+  }
+};

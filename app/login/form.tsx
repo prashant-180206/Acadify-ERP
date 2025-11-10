@@ -16,10 +16,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
+import { addUser } from "@/backend/authfuncs";
+import { useRouter } from "next/navigation";
 
 // Validation schema
 const formSchema = z.object({
-  prn: z.string().min(1, "PRN is required"),
+  email: z.string().min(1, "Email is required"),
   password: z.string().min(1, "Password is required"),
 });
 
@@ -32,13 +34,31 @@ export default function StudentLoginPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      prn: "",
+      email: "",
       password: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const router = useRouter();
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    try {
+      const { error } = await addUser(values.email, values.password, role);
+      if (error) {
+        alert("Error: " + error.message);
+        return;
+      }
+      router.push(
+        `${
+          role.toLowerCase() === "admin"
+            ? "/admin/departments"
+            : role.toLowerCase() + "/dashboard"
+        }`
+      );
+    } catch (err) {
+      console.error("Error during login:", err);
+    }
   }
 
   return (
@@ -53,15 +73,15 @@ export default function StudentLoginPage() {
             {/* PRN Number */}
             <FormField
               control={form.control}
-              name="prn"
+              name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-main-dark">
-                    Enter PRN Number
+                    Enter Email Number
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter PRN Number"
+                      placeholder="Enter Email Address"
                       {...field}
                       className="bg-bg-main rounded-full p-5 w-full"
                     />

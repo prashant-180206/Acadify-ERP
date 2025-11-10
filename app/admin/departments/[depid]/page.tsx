@@ -1,15 +1,18 @@
-import { courses } from "@/backend/courses";
+// import { courses } from "@/backend/courses";
 import { getDepById } from "@/backend/departments";
 import React from "react";
 import { Card, CardContent, CardAction } from "@/components/ui/card";
 import { CourseCard } from "./course";
 import { Plus } from "lucide-react";
 import { AddCourseDialog } from "./addcourse";
+import { getCoursesByDepartment } from "@/backend/courses";
 // import { supabase } from "@/lib/supabase";
 
 const Course = async ({ params }: { params: Promise<{ depid: string }> }) => {
   const { depid } = await params;
   const dep = await getDepById(depid);
+
+  const courses = await getCoursesByDepartment(parseInt(depid));
 
   return (
     <main className="p-6 space-y-6">
@@ -47,7 +50,7 @@ const Course = async ({ params }: { params: Promise<{ depid: string }> }) => {
                       <Plus size={50} className="text-txt" />
                     </CardContent>
                     <CardAction className="f-row w-full">
-                      <AddCourseDialog />
+                      <AddCourseDialog depid={depid} />
                     </CardAction>
                   </Card>
                 </section>

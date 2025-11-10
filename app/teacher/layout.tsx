@@ -5,14 +5,19 @@ import {
   SidebarTrigger,
   SidebarInset,
 } from "@/components/ui/sidebar";
-import { Menu } from "lucide-react";
-// import { AppSidebar } from "@/components/app-sidebar";
+// import { supabase } from "@/lib/supabase";
+// import { redirect } from "next/navigation";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // const { data } = await supabase.auth.getSession();
+  // const role = data.session?.user.user_metadata?.role?.toLowerCase();
+  // if (role !== "teacher") {
+  //   redirect("/login");
+  // }
   return (
     <SidebarProvider defaultOpen={false}>
       <AppSidebar />

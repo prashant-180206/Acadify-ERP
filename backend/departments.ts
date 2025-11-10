@@ -1,6 +1,7 @@
 "use server"
 
 import { supabase } from "@/lib/supabase";
+// import { teachers } from "./teachers";
 
 interface Department {
   d_id: number;
@@ -28,10 +29,10 @@ export async function addDepartment(department: Department) {
   if (error) {
     throw error;
   }
-
+  console.log("Add department function called", department);
   return data;
-}
 
+}
 export const getDepById =async (id: string) => {
   const { data, error } = await supabase
     .from('departments')
@@ -42,8 +43,24 @@ export const getDepById =async (id: string) => {
   if (error) {
     throw error;
   }
-
   return data;
 };
+
+export type DepSummary = {
+  d_id: number;
+  name: string;
+};
+
+export async function getDepSummaries(): Promise<DepSummary[]> {
+  const { data, error } = await supabase
+    .from('departments')
+    .select('d_id, name');
+
+  if (error) {
+    console.error('Error fetching departments:', error.message);
+    return [];
+  }
+  return data as DepSummary[];
+}
 
 

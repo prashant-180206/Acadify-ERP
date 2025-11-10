@@ -1,4 +1,3 @@
-// import { departments } from "@/backend/departments";
 import {
   Card,
   CardAction,
@@ -60,7 +59,7 @@ const page = async () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-txt">HOD Id : {val.HodId}</p>
+                <p className="text-txt">HOD Id : {val.hodid}</p>
                 <p className="text-txt">Email : {val.email}</p>
               </CardContent>
               <CardFooter>

@@ -25,7 +25,8 @@ export async function addStudent(student: StudentSchemaType) {
         cet_score: student.CET_Score,
         aadhar: student.aadhar,
         pan: student.pan,
-        category: student.category
+        category: student.category,
+        dep_id: student.dep_id,
       }
     ]);
 
@@ -35,7 +36,7 @@ export async function addStudent(student: StudentSchemaType) {
 
 export async function addTeacher(teacher: TeacherSchemaType) {
   const { data, error } = await supabase
-    .from('teacher')
+    .from('teachers')
     .insert([
       {
         first_name: teacher.firstName,
@@ -54,9 +55,52 @@ export async function addTeacher(teacher: TeacherSchemaType) {
         pan: teacher.pan,
         bank_name: teacher.bankName,
         account_no: teacher.accountNo,
+        salary: teacher.salary,
+        department: teacher.department,
+        designation: teacher.designation,
       }
     ]);
   
   if (error) throw error;
   return data;
+}
+
+export async function assignTeacherToCourse(teacherId: number, courseIds: number[]) {
+  // Step 1: Fetch all valid course IDs from the database
+  const { data: validCourses, error: fetchError } = await supabase
+    .from('courses')
+    .select('course_id');
+
+  if (fetchError || !validCourses) {
+    console.error('Failed to fetch courses:', fetchError);
+    return false;
+  }
+
+  const validCourseIds = validCourses.map((c) => c.course_id);
+
+  // Step 2: Filter only valid course IDs
+  const filteredCourseIds = courseIds.filter((id) => validCourseIds.includes(id));
+
+  if (filteredCourseIds.length === 0) {
+    console.warn('No valid course IDs provided.');
+    return false;
+  }
+
+  // Step 3: Prepare insert payload
+  const insertPayload = filteredCourseIds.map((courseId) => ({
+    teacher_id: teacherId,
+    course_id: courseId,
+  }));
+
+  // Step 4: Insert into teacher_courses
+  const { error: insertError } = await supabase
+    .from('teacher_courses')
+    .insert(insertPayload);
+
+  if (insertError) {
+    console.error('Error assigning teacher to courses:', insertError);
+    return false;
+  }
+
+  return true;
 }

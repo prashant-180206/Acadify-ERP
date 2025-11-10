@@ -17,6 +17,9 @@ export const TeacherSchema = z.object({
   pan: z.string().min(1, "pan is required"),
   bankName: z.string().min(11, "Select a bankName"),
   accountNo: z.string().min(1, "Select a accountNo"),
+  designation : z.string().min(1, "designation is required"),
+  department : z.number().int().min(1, "department is required") ,
+  salary : z.number().optional(),
 });
 
 export type TeacherSchemaType = z.infer<typeof TeacherSchema>;
@@ -38,6 +41,9 @@ export const defValues = {
   pan: "",
   bankName: "",
   accountNo: "",
+  designation : "",
+  department : 0,
+  salary : 0,
 };
 
 export function camelToTitleCase(text: string): string {

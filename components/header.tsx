@@ -1,16 +1,23 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import SignUpBtn from "./signupdialog";
 import { Button } from "./ui/button";
-import { Menu, X } from "lucide-react"; // icons for mobile menu
+import { Menu, X } from "lucide-react";
 
 const Header = () => {
   const path = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Default routes (safe for SSR)
   let Routes = [
     { label: "Home", link: "/" },
     { label: "About Us", link: "/about" },
@@ -18,9 +25,11 @@ const Header = () => {
     { label: "Services", link: "/services" },
   ];
 
-  if (path.includes("admin")) {
+  // Only update routes after mounted (client only)
+  if (mounted && path?.includes("admin")) {
     Routes = [
-      { label: "Dashboard", link: "/admin/dashboard" },
+      { label: "Add Teacher", link: "/admin/add_teacher" },
+      { label: "Add Student", link: "/admin/add_student" },
       { label: "Query Box", link: "/admin/query_box" },
       { label: "Departments", link: "/admin/departments" },
       { label: "Staff", link: "/admin/staff" },

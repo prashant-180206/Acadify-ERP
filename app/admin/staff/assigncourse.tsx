@@ -22,11 +22,12 @@ import {
 import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { assignTeacherToCourse } from "@/backend/addfuncs";
 
 const assignSchema = z.object({
   t_id: z.number(),
   courses: z
-    .array(z.object({ course_id: z.string().min(1, "Course ID is required") }))
+    .array(z.object({ course_id: z.number().int() }))
     .min(1, "At least one course is required"),
 });
 
@@ -43,7 +44,7 @@ export function AssignCoursesDialog({
     resolver: zodResolver(assignSchema),
     defaultValues: {
       t_id,
-      courses: [{ course_id: "" }],
+      courses: [{ course_id: 0 }],
     },
   });
 
@@ -52,7 +53,24 @@ export function AssignCoursesDialog({
     name: "courses",
   });
 
-  async function onSubmit(values: AssignCoursesFormValues) {}
+  async function onSubmit(values: AssignCoursesFormValues) {
+    try {
+      const success = await assignTeacherToCourse(
+        values.t_id,
+        values.courses.map((c) => c.course_id)
+      );
+      if (success) {
+        alert("Courses assigned successfully!");
+        form.reset();
+      } else {
+        alert(
+          "Failed to assign courses. Please check the course IDs and try again."
+        );
+      }
+    } catch (error) {
+      console.error("Failed to assign courses:", error);
+    }
+  }
 
   return (
     <Dialog>
@@ -85,9 +103,16 @@ export function AssignCoursesDialog({
                     <FormControl>
                       <div className="flex gap-2">
                         <Input
+                          type="number"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
                           className="rounded-full bg-bg-main"
                           placeholder="Enter course ID"
                           {...field}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            field.onChange(value === "" ? "" : Number(value));
+                          }}
                         />
                         {fields.length > 1 && (
                           <Button
@@ -110,7 +135,7 @@ export function AssignCoursesDialog({
             <Button
               type="button"
               variant="outline"
-              onClick={() => append({ course_id: "" })}
+              onClick={() => append({ course_id: 0 })}
               className="rounded-full"
             >
               + Add Another Course

@@ -18,6 +18,7 @@ export const StudentSchema = z.object({
   aadhar: z.string().min(16, "aadhar is required"),
   pan: z.string().min(1, "pan is required"),
   category: z.string().min(1, "Select a Category"),
+  dep_id: z.number().int().optional(),
 });
 
 export type StudentSchemaType = z.infer<typeof StudentSchema>;

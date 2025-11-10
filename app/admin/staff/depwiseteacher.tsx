@@ -1,14 +1,15 @@
+"use client";
+
 import React from "react";
-// import { TeacherCard } from "./TeacherCard";
-// import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { TeacherCard } from "./teachercard";
 
 type Teacher = {
-  t_id: number;
-  name: string;
-  department_id: number;
+  id: number;
+  first_name: string;
+  last_name: string;
+  department: number;
   email: string;
-  qualification: string;
+  highest_qualification: string;
 };
 
 type Props = {
@@ -20,7 +21,7 @@ export function TeachersByDepartment({ teachers, departments }: Props) {
   return (
     <div className="space-y-8 bg-bg py-6 px-4">
       {departments.map((dep) => {
-        const depTeachers = teachers.filter((t) => t.department_id === dep.id);
+        const depTeachers = teachers.filter((t) => t.department === dep.id);
 
         return (
           <section key={dep.id} className=" bg-bg">
@@ -31,7 +32,7 @@ export function TeachersByDepartment({ teachers, departments }: Props) {
               {depTeachers.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                   {depTeachers.map((teacher) => (
-                    <TeacherCard key={teacher.t_id} teacher={teacher} />
+                    <TeacherCard key={teacher.id} teacher={teacher} />
                   ))}
                 </div>
               ) : (

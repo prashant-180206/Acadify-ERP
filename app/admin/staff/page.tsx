@@ -1,9 +1,11 @@
 import React from "react";
 import { TeachersByDepartment } from "./depwiseteacher";
-import { teachers } from "@/backend/teachers";
-import { departments } from "@/backend/departments";
+import { getDepartments } from "@/backend/departments";
+import { getTeachers } from "@/backend/teachers";
 
-const Staff = () => {
+const Staff = async () => {
+  const departments = await getDepartments();
+  const teachers = await getTeachers();
   return (
     <main className="bg-bg-main">
       <TeachersByDepartment

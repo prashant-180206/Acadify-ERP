@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { camelToTitleCase, StudentSchemaType } from "./schema";
-import { Control } from "react-hook-form";
+import { Control, UseFormTrigger } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -19,6 +19,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
+// import { getDepSummaries } from "@/backend/departments";
+import { DepSummary, getDepSummaries } from "@/backend/departments";
 
 const Documents = ({
   control,
@@ -27,13 +29,26 @@ const Documents = ({
 }: {
   control: Control<StudentSchemaType>;
   settab: (str: string) => void;
-  trigger: any;
+  trigger: UseFormTrigger<StudentSchemaType>;
 }) => {
-  const inputs: (keyof StudentSchemaType)[] = ["aadhar", "pan", "category"];
+  const inputs: (keyof StudentSchemaType)[] = [
+    "aadhar",
+    "pan",
+    "category",
+    "dep_id",
+  ];
   const otherinputs = ["Category Certificate id"];
 
   // State object to hold value for otherinputs field
   const [catid, setcatid] = useState<string>("");
+  const [depSummaries, setDepSummaries] = React.useState<DepSummary[]>([]);
+  useEffect(() => {
+    const func = async () =>
+      await getDepSummaries().then((data) => {
+        setDepSummaries(data);
+      });
+    func();
+  }, []);
 
   return (
     <div className="f-row h-full w-full justify-evenly content-center gap-y-6 flex-wrap">
@@ -61,6 +76,41 @@ const Documents = ({
                         {["OBC", "Open", "SC", "ST", "EWS"].map((state, i) => (
                           <SelectItem key={i} value={state}>
                             {state}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          );
+        }
+
+        if (val === "dep_id") {
+          return (
+            <FormField
+              key={idx}
+              control={control}
+              name={val}
+              render={({ field }) => (
+                <FormItem className="w-5/12">
+                  <FormLabel className="text-main-dark">
+                    Fill for {val}
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      value={String(field.value ?? 0)}
+                      onValueChange={(value) => field.onChange(Number(value))}
+                    >
+                      <SelectTrigger className="w-full bg-bg-main rounded-full text-main-dark p-5">
+                        <SelectValue placeholder="Select Category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {depSummaries.map((state, i) => (
+                          <SelectItem key={i} value={state.d_id.toString()}>
+                            {state.name}
                           </SelectItem>
                         ))}
                       </SelectContent>

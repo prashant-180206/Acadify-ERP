@@ -32,7 +32,6 @@ const formSchema = z.object({
   hod: z.string().min(1, "HOD Id is important"),
 });
 
-// Fields configuration
 const fields = [
   {
     name: "departmentId",
