@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const StudentSchema = z.object({
+  id: z.number().int().optional(),
   firstName: z.string().min(1, "FirstName is required"),
   lastName: z.string().min(1, "lastName is required"),
   fatherName: z.string().min(1, "fatherName is required"),
@@ -19,11 +20,15 @@ export const StudentSchema = z.object({
   pan: z.string().min(1, "pan is required"),
   category: z.string().min(1, "Select a Category"),
   dep_id: z.number().int().optional(),
+  semester : z.number().int().optional(),
+  class: z.string().optional(),
+  rollNo : z.number().int().optional(),
 });
 
 export type StudentSchemaType = z.infer<typeof StudentSchema>;
 
 export const defValues = {
+  
   firstName: "",
   lastName: "",
   fatherName: "",

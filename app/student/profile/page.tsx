@@ -1,5 +1,5 @@
 import React from "react";
-import TeacherProfilePage from "./teacherprofile";
+import TeacherProfilePage from "./studentprofile";
 
 const Profile = () => {
   return (

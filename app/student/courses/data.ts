@@ -1,54 +1,5 @@
-export type DB_Course = {
-  course_id: number;
-  course_name: string;
-  credits: number;
-  num_lectures: number;
-  department_id: number;
-  semester: number;
-};
 
-export const courses: DB_Course[] = [
-  {
-    course_id: 1001,
-    course_name: "Engineering Mathematics-I",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 1,
-  },
-  {
-    course_id: 1001,
-    course_name: "Engineering Mathematics-I",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 1,
-  },
-  {
-    course_id: 1001,
-    course_name: "Engineering Mathematics-I",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 1,
-  },
-  {
-    course_id: 1001,
-    course_name: "Engineering Mathematics-I",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 1,
-  },
-  {
-    course_id: 1001,
-    course_name: "Engineering Mathematics-I",
-    credits: 4,
-    num_lectures: 4,
-    department_id: 101,
-    semester: 1,
-  },
-];
+
 
 export type DB_CourseInfo = {
   section_id: number; // PK for sections

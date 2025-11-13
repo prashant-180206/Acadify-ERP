@@ -1,9 +1,10 @@
 import React from "react";
-import { assignments, courseinfo, DB_Course } from "./data";
+import { assignments, courseinfo } from "./data";
 import { lightFormat, parseISO } from "date-fns";
 import AssignmentSubmissionDialog from "./submissionsdialog";
+import { Course } from "@/backend/courses";
 
-const Courseinfo = ({ course }: { course: DB_Course }) => {
+const Courseinfo = ({ course }: { course: Course }) => {
   // For convenience, assuming your course object like: {: [{ section, units, assignments }] }
   const section = course.course_id;
 

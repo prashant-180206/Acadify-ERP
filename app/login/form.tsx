@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -16,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff } from "lucide-react";
-import { addUser } from "@/backend/authfuncs";
+import { signInUser } from "@/backend/authfuncs";
 import { useRouter } from "next/navigation";
 
 // Validation schema
@@ -44,7 +45,7 @@ export default function StudentLoginPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     try {
-      const { error } = await addUser(values.email, values.password, role);
+      const { error } = await signInUser(values.email, values.password);
       if (error) {
         alert("Error: " + error.message);
         return;

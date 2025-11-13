@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Mail, GraduationCap, Building2 } from "lucide-react";
 import { AssignCoursesDialog } from "./assigncourse";
+import { ShowCoursesDialog } from "./showcourses";
 
 type Teacher = {
   id: number;
@@ -52,7 +53,11 @@ export function TeacherCard({ teacher }: { teacher: Teacher }) {
           </span>
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="f-col gap-2 ">
+        <ShowCoursesDialog
+          teacherId={teacher.id}
+          teacherName={teacher.first_name + " " + teacher.last_name}
+        />
         <AssignCoursesDialog
           t_id={teacher.id}
           teacherName={teacher.first_name + " " + teacher.last_name}

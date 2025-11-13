@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabase";
 
 export async function addStudent(student: StudentSchemaType) {
   const { data, error } = await supabase
-    .from('student')
+    .from('students')
     .insert([
       {
         first_name: student.firstName,

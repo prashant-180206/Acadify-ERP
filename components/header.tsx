@@ -30,7 +30,6 @@ const Header = () => {
     Routes = [
       { label: "Add Teacher", link: "/admin/add_teacher" },
       { label: "Add Student", link: "/admin/add_student" },
-      { label: "Query Box", link: "/admin/query_box" },
       { label: "Departments", link: "/admin/departments" },
       { label: "Staff", link: "/admin/staff" },
     ];
