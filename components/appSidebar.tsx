@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { usePathname, useRouter } from "next/navigation";
-import { Button } from "./ui/button";
 
 export function AppSidebar() {
   const path = usePathname();

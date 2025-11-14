@@ -52,9 +52,7 @@ const StudentProfilePage = async () => {
     );
   }
 
-  const fullName = [data.firstName, data.fatherName, data.lastName]
-    .filter(Boolean)
-    .join(" ");
+  const fullName = [data.firstName, data.lastName].filter(Boolean).join(" ");
 
   const student = {
     PRN_Number: data.id ?? "N/A",
