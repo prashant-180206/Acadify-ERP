@@ -1,58 +1,87 @@
-"use server"
+"use server";
 
 import { StudentSchemaType } from "@/app/admin/add_student/schema";
 import { TeacherSchemaType } from "@/app/admin/add_teacher/schema";
 import { createClient } from "@/lib/supabaseServer";
 
+// -------------------------
+// SIMPLE SERVER-SIDE CACHE
+// -------------------------
+let cachedUser: any = null;
+let cachedStudent: StudentSchemaType | null = null;
+let cachedTeacher: TeacherSchemaType | null = null;
+
+// use timestamps if you want automatic refresh
+// let cacheTimestamp = 0;
+// const CACHE_TTL = 1000 * 60 * 5; // 5 minutes
+
+
+// -------------------------
+// SIGN-UP / SIGN-IN (no caching needed)
+// -------------------------
+
 export async function addUser(email: string, password: string, role: string) {
-    const supabase = await createClient();
-    const { data, error } = await supabase.auth.signUp({
+  const supabase = await createClient();
+  return await supabase.auth.signUp({
     email,
     password,
     options: {
       data: { role: role.toLowerCase() },
     },
   });
-  return { data, error };
 }
 
 export async function signInUser(email: string, password: string) {
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-  return { data, error };
+  const result = await supabase.auth.signInWithPassword({ email, password });
+
+  // Clear cache because auth state changed
+  cachedUser = null;
+  cachedStudent = null;
+  cachedTeacher = null;
+
+  return result;
 }
 
+
+// -------------------------
+// GET USER DATA (CACHED)
+// -------------------------
 export async function getUserData() {
+  // if cache exists → return instantly
+  if (cachedUser) return cachedUser;
+
   try {
     const supabase = await createClient();
     const { data, error } = await supabase.auth.getUser();
-    
-    if (error) {
+
+    if (error || !data.user) {
       console.error("getUserData error:", error);
       return null;
     }
-    
-    return data.user;
+
+    cachedUser = data.user;
+    return cachedUser;
+
   } catch (error) {
     console.error("getUserData catch error:", error);
     return null;
   }
 }
 
-export async function loggedInStudent(){
+
+// -------------------------
+// LOGGED-IN STUDENT (CACHED)
+// -------------------------
+export async function loggedInStudent() {
+  if (cachedStudent) return cachedStudent;
+
   try {
     const user = await getUserData();
-    const email = user?.email || "";
-    console.log("Logged in student email:", email, user);
-    
-    if(!email) return null;
-    
-    const id = email.split("@")[0].split(".")[1];
-    console.log("Logged in student ID:", id);
-    
+    if (!user?.email) return null;
+
+    const id = user.email.split("@")[0].split(".")[1];
+
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("students")
@@ -60,34 +89,41 @@ export async function loggedInStudent(){
       .eq("id", id)
       .single();
 
-    if (error) {
+    if (error || !data) {
       console.error("Error fetching student data:", error);
       return null;
     }
 
-    const newdata ={
+    const result: StudentSchemaType = {
       ...data,
-      firstName :data?.first_name,
-      lastName :data?.last_name,
-      fatherName :data?.father_name,
-      contactNo :data?.contact_no,
-    }
+      firstName: data.first_name,
+      lastName: data.last_name,
+      fatherName: data.father_name,
+      contactNo: data.contact_no,
+    };
 
-    return newdata as StudentSchemaType | null;
+    cachedStudent = result;
+    return result;
+
   } catch (error) {
     console.error("loggedInStudent error:", error);
     return null;
   }
 }
 
-export async function loggedInTeacher(){
+
+// -------------------------
+// LOGGED-IN TEACHER (CACHED)
+// -------------------------
+export async function loggedInTeacher() {
+  if (cachedTeacher) return cachedTeacher;
+
   try {
     const user = await getUserData();
-    const email = user?.email || "";
-    
-    if(!email) return null;
-    
-    const id = email.split("@")[0].split(".")[1];
+    if (!user?.email) return null;
+
+    const id = user.email.split("@")[0].split(".")[1];
+
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("teachers")
@@ -95,15 +131,18 @@ export async function loggedInTeacher(){
       .eq("id", id)
       .single();
 
-    if (error) {
+    if (error || !data) {
       console.error("Error fetching teacher data:", error);
       return null;
     }
 
-    return data as TeacherSchemaType | null;
+    const result = data as TeacherSchemaType;
+    cachedTeacher = result;
+
+    return result;
+
   } catch (error) {
     console.error("loggedInTeacher error:", error);
     return null;
   }
 }
-

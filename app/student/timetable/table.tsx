@@ -1,5 +1,5 @@
 import React from "react";
-import { timetableData } from "./data";
+// import { timetableData } from "./data";
 import {
   Table,
   TableBody,
@@ -8,8 +8,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { getTimetableForDivision } from "@/backend/divisions";
+import { loggedInStudent } from "@/backend/authfuncs";
 
-const TimeTableGrid = () => {
+const TimeTableGrid = async () => {
+  const user = await loggedInStudent();
+
+  let lectures;
+  if (user) {
+    lectures = await getTimetableForDivision(user.class || "");
+  } else {
+    lectures = null;
+  }
   const days = [
     "Sunday",
     "Monday",
@@ -32,7 +42,8 @@ const TimeTableGrid = () => {
   ];
 
   const getCellData = (day: string, timeslot: string) => {
-    const entry = timetableData.find(
+    if (!lectures) return null;
+    const entry = lectures.find(
       (item) => item.day === day && item.timeslot === timeslot
     );
     if (entry) {
@@ -66,7 +77,10 @@ const TimeTableGrid = () => {
             <TableRow key={day}>
               <TableCell className="w-24 font-bold">{day}</TableCell>
               {timeslots.map((slot) => (
-                <TableCell key={slot} className="w-32 text-center text-sm">
+                <TableCell
+                  key={slot}
+                  className="w-32 text-center text-sm overflow-hidden"
+                >
                   {getCellData(day, slot)}
                 </TableCell>
               ))}
