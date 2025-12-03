@@ -108,3 +108,67 @@ export const getCoursesForStudent = async (
 
   return data as Course[];
 };
+
+export async function getCourseByName(
+  courseName: string
+): Promise<DBCourse | null> {
+  try {
+    // Validation
+    if (!courseName || typeof courseName !== "string") {
+      console.error("getCourseByName: Invalid course name provided");
+      return null;
+    }
+
+    // Trim whitespace and validate non-empty
+    const trimmedName = courseName.trim();
+    if (trimmedName.length === 0) {
+      console.error("getCourseByName: Empty course name provided");
+      return null;
+    }
+
+    console.log(`Fetching course by name: "${trimmedName}"`);
+
+    // Query database for exact match first
+    let { data, error } = await supabase
+      .from("courses")
+      .select("*")
+      .eq("course_name", trimmedName)
+      .single();
+
+    // If exact match fails, try case-insensitive search
+    if (error || !data) {
+      console.log(
+        `Exact match failed, trying case-insensitive search for: "${trimmedName}"`
+      );
+
+      const { data: searchData, error: searchError } = await supabase
+        .from("courses")
+        .select("*")
+        .ilike("course_name", trimmedName)
+        .limit(1)
+        .single();
+
+      if (searchError || !searchData) {
+        console.error("getCourseByName error (both exact and ilike failed):", {
+          exactError: error,
+          searchError,
+          courseName: trimmedName,
+        });
+        return null;
+      }
+
+      data = searchData;
+    }
+
+    console.log(`Successfully found course:`, {
+      course_id: data.course_id,
+      course_name: data.course_name,
+      department_id: data.department_id,
+    });
+
+    return data as DBCourse;
+  } catch (error) {
+    console.error("getCourseByName catch error:", error);
+    return null;
+  }
+}

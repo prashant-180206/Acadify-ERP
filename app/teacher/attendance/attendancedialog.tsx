@@ -1,40 +1,44 @@
 // File: components/AttendanceDialogServer.tsx
 import React from "react";
-import AttendanceDialogClient, {
-  SimpleStudent,
-} from "./attendancedialogclient";
+import AttendanceDialogClient from "./attendancedialogclient";
 import { loggedInTeacher } from "@/backend/authfuncs";
 import { getStudentsByTeacher } from "@/backend/divisions";
-// import AttendanceDialogClient, { SimpleStudent } from "./AttendanceDialogClient";
-
-// This is the SERVER component you can use in the app router (app/...) or pages.
-// It accepts optional props; by default it renders with static sample students.
+import { getCourseByName } from "@/backend/courses";
 
 type Props = {
-  students?: SimpleStudent[];
-  // optional handler for server-side submission (for example, calling an API route)
-  submitUrl?: string; // if provided, the client can POST to this URL (you'll wire it in client)
+  courseName?: string;
+  className?: string;
+  date?: string;
+  timeslot?: string;
 };
 
-const defaultStudents: SimpleStudent[] = [
-  { rollNo: "01", name: "Raj Jigarnon" },
-  { rollNo: "02", name: "Sita Verma" },
-  { rollNo: "03", name: "Aman Singh" },
-];
-
-export default async function AttendanceDialogServer({}: Props) {
-  // If you want to fetch students on the server (by teacherId), do that here.
-  // Example (psuedocode):
-  // const students = await getStudentsForTeacher(teacherId);
+export default async function AttendanceDialogServer({
+  courseName,
+  className,
+  date,
+  timeslot,
+}: Props) {
   const data = await loggedInTeacher();
   if (!data) {
     return <div className="flex items-center justify-center h-full"></div>;
   }
-  const students = await getStudentsByTeacher(data.id || 0);
+
+  const [students, course] = await Promise.all([
+    getStudentsByTeacher(data.id || 0),
+    courseName ? getCourseByName(courseName) : Promise.resolve(null),
+  ]);
+
   return (
-    // Server component can render the client component and pass props
     <div>
-      <AttendanceDialogClient students={students} />
+      <AttendanceDialogClient
+        students={students}
+        courseId={course?.course_id || 0}
+        instructorId={data.id || 0}
+        courseName={courseName || ""}
+        className={className || ""}
+        date={date || new Date().toISOString().split("T")[0]}
+        timeslot={timeslot || ""}
+      />
     </div>
   );
 }

@@ -39,7 +39,12 @@ const LectureAttendanceCard: React.FC<LectureAttendanceCardProps> = ({
         <CardContent className="flex justify-end gap-4">
           <ModifyAttendanceDialog />
 
-          <AttendanceDialog />
+          <AttendanceDialog
+            courseName={course_name}
+            className={class_name}
+            date={dateString}
+            timeslot={timeslot}
+          />
         </CardContent>
       </CardHeader>
     </Card>

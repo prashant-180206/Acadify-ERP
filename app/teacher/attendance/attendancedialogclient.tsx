@@ -19,6 +19,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CheckCircle2 } from "lucide-react";
+import { submitAttendance } from "./actions";
 
 export type SimpleStudent = {
   PRN: number;
@@ -26,31 +27,70 @@ export type SimpleStudent = {
   Roll_No: number;
 };
 
+interface AttendanceDialogClientProps {
+  students?: SimpleStudent[];
+  courseId: number;
+  instructorId: number;
+  courseName: string;
+  className: string;
+  date: string;
+  timeslot?: string;
+}
+
 const AttendanceDialogClient = ({
   students = [],
-  onSubmit,
-}: {
-  students?: SimpleStudent[];
-  onSubmit?: (payload: { Roll_No: string; isPresent: boolean }[]) => void;
-}) => {
+  courseId,
+  instructorId,
+  courseName,
+  className,
+  date,
+  timeslot,
+}: AttendanceDialogClientProps) => {
   const [open, setOpen] = useState(false);
   const [attendanceMap, setAttendanceMap] = useState<Record<string, boolean>>(
     {}
   );
   const [activeTab, setActiveTab] = useState<"present" | "absent">("present");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const toggleAttendance = (Roll_No: number) => {
     setAttendanceMap((prev) => ({ ...prev, [Roll_No]: !prev[Roll_No] }));
   };
 
-  const handleSubmit = () => {
-    const data = students.map(({ Roll_No }) => ({
-      Roll_No: Roll_No,
-      isPresent: attendanceMap[Roll_No] || false,
-    }));
-    if (onSubmit) onSubmit(data);
-    else console.log("Submitted attendance:", data);
-    setOpen(false);
+  const handleSubmit = async () => {
+    if (!courseId || !instructorId) {
+      alert("Missing course or instructor information");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Get only present students' roll numbers
+      const presentRolls = students
+        .filter(({ Roll_No }) => attendanceMap[Roll_No] === true)
+        .map(({ Roll_No }) => Roll_No);
+
+      const result = await submitAttendance(
+        courseId,
+        instructorId,
+        date,
+        presentRolls
+      );
+
+      if (result.success) {
+        alert("Attendance submitted successfully!");
+        setOpen(false);
+        // Reset form
+        setAttendanceMap({});
+      } else {
+        alert(`Error: ${result.message}`);
+      }
+    } catch (error) {
+      console.error("Error submitting attendance:", error);
+      alert("Failed to submit attendance. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -63,7 +103,13 @@ const AttendanceDialogClient = ({
 
       <DialogContent className="bg-bg p-0 h-[60vh] overflow-auto no-scrollbar">
         <DialogHeader className="pt-6 pb-2 px-6">
-          <DialogTitle className="flex gap-8 justify-start text-base font-bold">
+          <DialogTitle className="text-lg font-bold mb-2">
+            Mark Attendance - {courseName}
+          </DialogTitle>
+          <p className="text-sm text-muted-foreground mb-4">
+            {className} | {timeslot} | {date}
+          </p>
+          <div className="flex gap-8 justify-start text-base font-bold">
             <button
               onClick={() => setActiveTab("absent")}
               className={`px-3 py-1 rounded border border-transparent cursor-pointer text-sm transition-colors ${
@@ -84,7 +130,7 @@ const AttendanceDialogClient = ({
             >
               Mark For Present Numbers
             </button>
-          </DialogTitle>
+          </div>
         </DialogHeader>
 
         <div className="px-6 pb-2">
@@ -131,11 +177,19 @@ const AttendanceDialogClient = ({
         </div>
 
         <DialogFooter className="flex gap-4 justify-end px-6 pb-6">
-          <Button variant="secondary" onClick={() => setAttendanceMap({})}>
+          <Button
+            variant="secondary"
+            onClick={() => setAttendanceMap({})}
+            disabled={isSubmitting}
+          >
             Clear
           </Button>
-          <Button variant="default" onClick={handleSubmit}>
-            Submit Attendance
+          <Button
+            variant="default"
+            onClick={handleSubmit}
+            disabled={isSubmitting || courseId === 0}
+          >
+            {isSubmitting ? "Submitting..." : "Submit Attendance"}
           </Button>
         </DialogFooter>
       </DialogContent>
