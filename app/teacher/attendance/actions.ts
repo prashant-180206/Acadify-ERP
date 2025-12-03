@@ -32,15 +32,6 @@ export async function submitAttendance(
       };
     }
 
-    // Validate date format
-    // const parsedDate = new Date(date);
-    // if (isNaN(parsedDate.getTime())) {
-    //   return {
-    //     success: false,
-    //     message: "Invalid date format",
-    //   };
-    // }
-
     // Validate roll numbers array
     if (!Array.isArray(presentStudentRolls)) {
       return {

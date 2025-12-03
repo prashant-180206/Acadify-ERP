@@ -1,6 +1,3 @@
-
-
-
 export type DB_CourseInfo = {
   section_id: number; // PK for sections
   course_id: number; // FK → courses.course_id
@@ -134,3 +131,99 @@ export const submissions: DB_Submission[] = [
     remarks: "Late submission, partial credit given.",
   },
 ];
+
+// Generate dynamic course units based on course name/type
+export function generateCourseUnits(courseName: string): string[] {
+  const courseUnitsMap: { [key: string]: string[] } = {
+    "Data Structures": [
+      "Arrays and Linked Lists",
+      "Stacks and Queues",
+      "Trees and Binary Search Trees",
+      "Hash Tables",
+      "Graphs and Graph Algorithms",
+    ],
+    Database: [
+      "Relational Model and SQL",
+      "Database Design and Normalization",
+      "Query Optimization",
+      "Transaction Management",
+      "NoSQL Databases",
+    ],
+    "Operating Systems": [
+      "Process Management",
+      "Memory Management",
+      "File Systems",
+      "I/O and Device Management",
+      "Synchronization and Deadlocks",
+    ],
+    Networks: [
+      "Network Protocols and Models",
+      "TCP/IP and Internet Architecture",
+      "Routing and Switching",
+      "Network Security",
+      "Wireless and Mobile Networks",
+    ],
+    "Software Engineering": [
+      "Software Development Life Cycle",
+      "Requirements Engineering",
+      "Design Patterns and Architecture",
+      "Testing and Quality Assurance",
+      "Project Management",
+    ],
+    "Machine Learning": [
+      "Supervised Learning Algorithms",
+      "Unsupervised Learning",
+      "Neural Networks and Deep Learning",
+      "Model Evaluation and Selection",
+      "Ethics in AI and ML",
+    ],
+  };
+
+  // Find matching course type
+  for (const [key, units] of Object.entries(courseUnitsMap)) {
+    if (courseName.toLowerCase().includes(key.toLowerCase())) {
+      return units;
+    }
+  }
+
+  // Default units for unknown courses
+  return [
+    "Introduction and Fundamentals",
+    "Core Concepts and Principles",
+    "Advanced Topics",
+    "Practical Applications",
+    "Project Work and Assessment",
+  ];
+}
+
+// Generate dynamic assignments for a course
+export function generateCourseAssignments(
+  courseId: number,
+  courseName: string
+): DB_Assignment[] {
+  const assignmentTypes = [
+    { name: "Programming Assignment", prefix: "PA" },
+    { name: "Lab Exercise", prefix: "LAB" },
+    { name: "Project Work", prefix: "PROJ" },
+    { name: "Case Study", prefix: "CS" },
+    { name: "Research Paper", prefix: "RP" },
+  ];
+
+  const today = new Date();
+  const assignments: DB_Assignment[] = [];
+
+  for (let i = 0; i < 4; i++) {
+    const assignmentType = assignmentTypes[i % assignmentTypes.length];
+    const dueDate = new Date(today);
+    dueDate.setDate(today.getDate() + (i + 1) * 14); // Every 2 weeks
+
+    assignments.push({
+      assignment_id: courseId * 100 + i + 1,
+      section_id: courseId,
+      name: `${assignmentType.prefix} ${i + 1}`,
+      dueDate: dueDate.toISOString().split("T")[0],
+    });
+  }
+
+  return assignments;
+}

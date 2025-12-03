@@ -130,3 +130,43 @@ export async function getTodaysLecturesForInstructor(
 
   return mapped;
 }
+
+// helper: returns lectures and attendance for a student based on their info
+export async function getLecturesForStudent(
+  studentRoll: number,
+  studentDepartmentId: number,
+  studentSemester: number,
+  studentClass: string
+): Promise<
+  {
+    id: string;
+    course_name: string;
+    class_name: string;
+    lectures_attended: number;
+    total_lectures: number;
+  }[]
+> {
+  try {
+    // Import the attendance function
+    const { getStudentAttendanceSummary } = await import("./attendance");
+
+    // Get attendance data for the student
+    const attendanceData = await getStudentAttendanceSummary(
+      studentRoll,
+      studentDepartmentId,
+      studentSemester
+    );
+
+    // Transform the data to match the expected format
+    return attendanceData.map((data) => ({
+      id: data.course_id.toString(),
+      course_name: data.course_name,
+      class_name: studentClass,
+      lectures_attended: data.lectures_attended,
+      total_lectures: data.total_lectures,
+    }));
+  } catch (error) {
+    console.error("Error in getLecturesForStudent:", error);
+    return [];
+  }
+}

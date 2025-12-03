@@ -118,7 +118,7 @@ export async function loggedInTeacher() {
       .eq("id", id)
       .single();
 
-    if (error || !data) {
+    if (!data) {
       console.error("Error fetching teacher data:", error);
       return null;
     }

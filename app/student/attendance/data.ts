@@ -6,40 +6,34 @@ export type Lecture = {
   total_lectures: number;
 };
 
-export const recentLectures: Lecture[] = [
-  {
-    id: "1",
-    course_name: "LDAM",
-    class_name: "CS-K",
-    lectures_attended: 9,
-    total_lectures: 10,
-  },
-  {
-    id: "2",
-    course_name: "MATH101",
-    class_name: "MA-A",
-    lectures_attended: 9,
-    total_lectures: 10,
-  },
-  {
-    id: "3",
-    course_name: "PHY102",
-    class_name: "PH-B",
-    lectures_attended: 9,
-    total_lectures: 10,
-  },
-  {
-    id: "4",
-    course_name: "CHEM110",
-    class_name: "CH-C",
-    lectures_attended: 9,
-    total_lectures: 10,
-  },
-  {
-    id: "5",
-    course_name: "BIO105",
-    class_name: "BI-D",
-    lectures_attended: 6,
-    total_lectures: 10,
-  },
-];
+// Generate realistic attendance data with varied patterns
+export function generateRealisticLectures(): Lecture[] {
+  const courses = [
+    { name: "Data Structures and Algorithms", class: "CS-K", id: "1001" },
+    { name: "Database Management Systems", class: "CS-L", id: "1002" },
+    { name: "Operating Systems", class: "CS-M", id: "1003" },
+    { name: "Computer Networks", class: "CS-N", id: "1004" },
+    { name: "Software Engineering", class: "CS-O", id: "1005" },
+    { name: "Machine Learning", class: "CS-P", id: "1006" },
+  ];
+
+  return courses.map((course) => {
+    const totalLectures = Math.floor(Math.random() * 10) + 25; // 25-35 lectures
+    // Vary attendance rates: some courses better attended than others
+    const baseAttendanceRate = 0.65 + Math.random() * 0.3; // 65-95%
+    const lecturesAttended = Math.max(
+      Math.floor(totalLectures * baseAttendanceRate),
+      Math.floor(totalLectures * 0.5) // Minimum 50% attendance
+    );
+
+    return {
+      id: course.id,
+      course_name: course.name,
+      class_name: course.class,
+      lectures_attended: lecturesAttended,
+      total_lectures: totalLectures,
+    };
+  });
+}
+
+export const recentLectures: Lecture[] = generateRealisticLectures();
