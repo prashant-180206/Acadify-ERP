@@ -1,5 +1,5 @@
 import React from "react";
-import { timetableData } from "./data";
+// import { timetableData } from "./data";
 import {
   Table,
   TableBody,
@@ -8,8 +8,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { loggedInTeacher } from "@/backend/authfuncs";
+import { getTimetableForInstructor } from "@/backend/divisions";
 
-const TimeTableGrid = () => {
+const TimeTableGrid = async () => {
+  const data = await loggedInTeacher();
+  if (!data) {
+    return <div className="flex items-center justify-center h-full"></div>;
+  }
+  const timetableData = await getTimetableForInstructor(data.id || 0);
   const days = [
     "Sunday",
     "Monday",
@@ -55,7 +62,10 @@ const TimeTableGrid = () => {
           <TableRow>
             <TableHead className="w-24"></TableHead>
             {timeslots.map((slot) => (
-              <TableHead key={slot} className="w-32 text-center">
+              <TableHead
+                key={slot}
+                className="w-32 text-center overflow-hidden "
+              >
                 {slot}
               </TableHead>
             ))}
@@ -66,7 +76,10 @@ const TimeTableGrid = () => {
             <TableRow key={day}>
               <TableCell className="w-24 font-bold">{day}</TableCell>
               {timeslots.map((slot) => (
-                <TableCell key={slot} className="w-32 text-center text-sm">
+                <TableCell
+                  key={slot}
+                  className="w-32 text-center text-sm overflow-hidden "
+                >
                   {getCellData(day, slot)}
                 </TableCell>
               ))}

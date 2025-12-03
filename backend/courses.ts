@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { supabase } from "@/lib/supabase";
 
@@ -18,7 +18,6 @@ interface courseWithTeacher {
   } | null; // null if the join fails
 }
 
-
 export const getCoursesForTeacher = async (t_id: number) => {
   const { data, error } = await supabase
     .from("teacher_courses")
@@ -32,14 +31,58 @@ export const getCoursesForTeacher = async (t_id: number) => {
   return data as unknown as courseWithTeacher[];
 };
 
-export async function getCoursesByDepartment(departmentId: number): Promise<Course[]> {
+export type DBCourse = {
+  course_id: number;
+  course_name: string;
+  credits: number;
+  num_lectures: number;
+  department_id: number;
+  semester: number;
+};
+
+export async function getCoursesByTeacherId(
+  teacherId: number
+): Promise<DBCourse[]> {
+  const idsResult = await supabase
+    .from("teacher_courses")
+    .select("course_id")
+    .eq("teacher_id", teacherId);
+
+  const ids =
+    idsResult.data?.map((r: { course_id: number }) => r.course_id) ?? [];
+  if (ids.length === 0) return [];
+
+  const { data, error } = await supabase
+    .from("courses")
+    .select(
+      "course_id, course_name, credits, num_lectures, department_id, semester"
+    )
+    .in("course_id", ids);
+
+  if (error) throw error;
+  // data is any[]; map to DBCourse
+  return (data ?? []).map((r: DBCourse) => ({
+    course_id: Number(r.course_id),
+    course_name: String(r.course_name),
+    credits: Number(r.credits),
+    num_lectures: Number(r.num_lectures),
+    department_id: Number(r.department_id),
+    semester: Number(r.semester),
+  }));
+}
+
+export async function getCoursesByDepartment(
+  departmentId: number
+): Promise<Course[]> {
   const { data, error } = await supabase
     .from("courses")
     .select("*")
     .eq("department_id", departmentId);
 
   if (error) {
-    console.log(`Failed to fetch courses for department ${departmentId}: ${error.message}`);
+    console.log(
+      `Failed to fetch courses for department ${departmentId}: ${error.message}`
+    );
   }
 
   return data ?? [];
@@ -53,12 +96,15 @@ export const addCourse = async (course: Course): Promise<void> => {
   }
 };
 
-export const getCoursesForStudent = async (department_id:number,semester:number) => {
-  const { data} = await supabase
-  .from("courses")
-  .select("*")
-  .eq("semester", semester)
-  .eq("department_id", department_id);
+export const getCoursesForStudent = async (
+  department_id: number,
+  semester: number
+) => {
+  const { data } = await supabase
+    .from("courses")
+    .select("*")
+    .eq("semester", semester)
+    .eq("department_id", department_id);
 
   return data as Course[];
-}
+};

@@ -9,7 +9,6 @@ interface LectureAttendanceCardProps {
   class_name: string;
   timeslot: string;
   date: string | Date;
-  attendance_marked: boolean;
 }
 
 const LectureAttendanceCard: React.FC<LectureAttendanceCardProps> = ({
@@ -17,7 +16,6 @@ const LectureAttendanceCard: React.FC<LectureAttendanceCardProps> = ({
   class_name,
   timeslot,
   date,
-  attendance_marked,
 }) => {
   // Format date as ISO string (consistent across server/client)
   const dateString =

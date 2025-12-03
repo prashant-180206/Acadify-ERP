@@ -8,19 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-
-const teacher = {
-  t_id: 101,
-  name: "Dr. Alice Johnson",
-  gender: "Female",
-  qualification: "PhD in Computer Science",
-  designation: "HOD",
-  email: "alice.johnson@university.edu",
-  contact_number: "+1 234-567-8900",
-  join_date: "2015-06-15",
-  department: "Computer Science",
-  salary: 75000,
-};
+import { loggedInTeacher } from "@/backend/authfuncs";
 
 // Utility to extract initials for avatar
 const getInitials = (name: string) =>
@@ -30,13 +18,11 @@ const getInitials = (name: string) =>
     .join("")
     .toUpperCase();
 
-// Format date consistently: YYYY-MM-DD format
-const formatDate = (dateString: string) => dateString;
-
 // Format number with thousand separator
 const formatSalary = (salary: number) => salary.toString();
 
-const TeacherProfilePage = () => {
+const TeacherProfilePage = async () => {
+  const teacher = await loggedInTeacher();
   return (
     <div className="w-full md:p-10 flex-1/2 justify-center f-row items-start">
       <Card className="bg-bg-dark w-full md:max-w-250 rounded-none md:rounded-lg">
@@ -49,33 +35,35 @@ const TeacherProfilePage = () => {
           <div className="flex flex-col md:flex-row gap-10 items-center">
             <Avatar className="w-40 h-40 md:w-80 md:h-80">
               <AvatarFallback className="text-4xl bg-bg-main  font-bold">
-                {getInitials(teacher.name)}
+                {getInitials(teacher?.firstName + " " + teacher?.lastName)}
               </AvatarFallback>
             </Avatar>
 
             {/* Profile Details */}
             <div className="flex items-center flex-col gap-2 text-sm md:text-lg flex-1">
               <div className="f-col items-start gap-4">
-                <p className="font-semibold text-xl">{teacher.name}</p>
-                <p>
-                  ID: <span className="font-medium">{teacher.t_id}</span>
+                <p className="font-semibold text-xl">
+                  {teacher?.firstName} {teacher?.lastName}
                 </p>
-                <p>Gender: {teacher.gender}</p>
-                <p>Qualification: {teacher.qualification}</p>
+                <p>
+                  ID: <span className="font-medium">{teacher?.id}</span>
+                </p>
+                <p>Gender: {teacher?.gender}</p>
+                <p>Qualification: {teacher?.highestQualification}</p>
                 <p>
                   Designation:{" "}
-                  <Badge variant="outline">{teacher.designation}</Badge>
+                  <Badge variant="outline">{teacher?.designation}</Badge>
                 </p>
                 <p>
                   Department:{" "}
-                  <Badge variant="secondary">{teacher.department}</Badge>
+                  <Badge variant="secondary">{teacher?.department}</Badge>
                 </p>
                 <p>
-                  Email: <span className="text-blue-400">{teacher.email}</span>
+                  Email: <span className="text-blue-400">{teacher?.email}</span>
                 </p>
-                <p>Contact: {teacher.contact_number}</p>
-                <p>Joined: {formatDate(teacher.join_date)}</p>
-                <p>Salary: ${formatSalary(teacher.salary)}</p>
+                <p>Contact: {teacher?.contactNo}</p>
+                {/* <p>Joined: {formatDate(teacher.)}</p> */}
+                <p>Salary: ${formatSalary(teacher?.salary || 0)}</p>
               </div>
             </div>
           </div>

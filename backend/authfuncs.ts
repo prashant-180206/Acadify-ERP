@@ -3,22 +3,14 @@
 import { StudentSchemaType } from "@/app/admin/add_student/schema";
 import { TeacherSchemaType } from "@/app/admin/add_teacher/schema";
 import { createClient } from "@/lib/supabaseServer";
+import { UserAppMetadata } from "@supabase/supabase-js";
 
 // -------------------------
 // SIMPLE SERVER-SIDE CACHE
 // -------------------------
-let cachedUser: any = null;
+let cachedUser: UserAppMetadata | null = null;
 let cachedStudent: StudentSchemaType | null = null;
 let cachedTeacher: TeacherSchemaType | null = null;
-
-// use timestamps if you want automatic refresh
-// let cacheTimestamp = 0;
-// const CACHE_TTL = 1000 * 60 * 5; // 5 minutes
-
-
-// -------------------------
-// SIGN-UP / SIGN-IN (no caching needed)
-// -------------------------
 
 export async function addUser(email: string, password: string, role: string) {
   const supabase = await createClient();
@@ -43,7 +35,6 @@ export async function signInUser(email: string, password: string) {
   return result;
 }
 
-
 // -------------------------
 // GET USER DATA (CACHED)
 // -------------------------
@@ -62,13 +53,11 @@ export async function getUserData() {
 
     cachedUser = data.user;
     return cachedUser;
-
   } catch (error) {
     console.error("getUserData catch error:", error);
     return null;
   }
 }
-
 
 // -------------------------
 // LOGGED-IN STUDENT (CACHED)
@@ -104,13 +93,11 @@ export async function loggedInStudent() {
 
     cachedStudent = result;
     return result;
-
   } catch (error) {
     console.error("loggedInStudent error:", error);
     return null;
   }
 }
-
 
 // -------------------------
 // LOGGED-IN TEACHER (CACHED)
@@ -136,11 +123,14 @@ export async function loggedInTeacher() {
       return null;
     }
 
-    const result = data as TeacherSchemaType;
+    const result: TeacherSchemaType = {
+      ...data,
+      highestQualification: data.highest_qualification,
+      contactNo: data.contact_no,
+    };
     cachedTeacher = result;
 
     return result;
-
   } catch (error) {
     console.error("loggedInTeacher error:", error);
     return null;

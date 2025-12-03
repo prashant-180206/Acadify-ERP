@@ -1,5 +1,5 @@
 import React from "react";
-import { class_attendance, student_queries, students } from "./data";
+import { class_attendance, student_queries } from "./data";
 import { CircularLoader } from "@/components/chartradial";
 import {
   Table,
@@ -9,9 +9,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
+import { loggedInTeacher } from "@/backend/authfuncs";
+import { getStudentsByTeacher } from "@/backend/divisions";
+import { StudentInfoDialog } from "./studentinfodialog";
 
-const myClass = () => {
+const myClass = async () => {
+  const data = await loggedInTeacher();
+  if (!data) {
+    return <div className="flex items-center justify-center h-full"></div>;
+  }
+  const students = await getStudentsByTeacher(data.id || 0);
   return (
     <main className="bg-bg md:h-screen w-full">
       <h1 className="heading pb-0 mb-0">My Class</h1>
@@ -31,13 +38,7 @@ const myClass = () => {
                   <TableCell>{student.Roll_No}</TableCell>
                   <TableCell>{student.Name}</TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      size="sm"
-                      variant="default"
-                      className="bg-green-400 hover:bg-green-500 text-white"
-                    >
-                      View Info
-                    </Button>
+                    <StudentInfoDialog studentPRN={student.PRN} />
                   </TableCell>
                 </TableRow>
               ))}

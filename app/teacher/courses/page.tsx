@@ -1,12 +1,4 @@
 import React from "react";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import CourseManager from "./cousemanager";
 
 const Courses = () => {
